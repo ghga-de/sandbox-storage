@@ -1,0 +1,2 @@
+cd /workspace
+hypercorn sandbox-storage/main:app
