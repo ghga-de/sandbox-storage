@@ -1,2 +1,2 @@
-cd /workspace
+cd /workspaces/sandbox-storage
 hypercorn sandbox-storage/main:app

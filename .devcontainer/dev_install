@@ -1,8 +1,10 @@
 #!/bin/bash
 # install service in dev container
 
-cd /workspace
+cd /workspaces/sandbox-storage
 
 # install client in edit mode 
 # with testing dependencies:
+pip install fastapi
+pip install hypercorn
 pip install -e ".[testing]"

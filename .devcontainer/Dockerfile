@@ -9,5 +9,6 @@ ARG INSTALL_NODE="true"
 ARG NODE_VERSION="lts/*"
 RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
-# Copy install script to bin:
+# Copy install and launcher script to bin:
 COPY ./.devcontainer/dev_install /bin
+COPY ./.devcontainer/dev_launcher /bin
