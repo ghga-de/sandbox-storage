@@ -1,2 +1,2 @@
 cd /workspaces/sandbox-storage
-hypercorn sandbox-storage/main:app
+hypercorn --reload sandbox-storage/main:app

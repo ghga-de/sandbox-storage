@@ -7,4 +7,4 @@ cd /workspaces/sandbox-storage
 # with testing dependencies:
 pip install fastapi
 pip install hypercorn
-pip install -e ".[testing]"
+#pip install -e ".[testing]"
