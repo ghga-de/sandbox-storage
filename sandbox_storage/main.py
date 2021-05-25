@@ -12,32 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from fastapi import FastAPI
 import uvicorn
-from .config import Settings
+import typer
+from fastapi import FastAPI
+from typing import Optional
 
-settings = Settings()
+from .config import get_settings
+
+settings = get_settings()
 app = FastAPI()
 
 
-@app.get('/')
-def index():
-    return ('Hello World')
-
-
-@app.get('/objects/{DRS_ID}')
-def get_objects_id(DRS_ID: str):
-    return {'DRS_ID': DRS_ID}
-
-
-@app.get('/objects/{DRS_ID}/access/{access_id}')
-def get_objects_id_access_id(DRS_ID: str, access_id: str):
-    return {'DRS_ID': DRS_ID, 'access_id': access_id}
-
-
-def main():
+def run(
+    config: Optional[str] = typer.Option(
+        None,
+        help = "Path to config yaml."
+    )
+):
     """Starts backend server
     """
+    global settings
+    if config:
+        # overwrite settings
+        settings = get_settings(config_yaml=config)
+
     uvicorn.run(
         app,
         host=settings.host,
@@ -46,5 +44,8 @@ def main():
     )
 
 
+def run_cli():
+    typer.run(run)
+
 if __name__ == "__main__":
-    main()
+    run_cli()

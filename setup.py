@@ -21,7 +21,9 @@ with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
 
 requires = [
-    'fastapi[all]'
+    'fastapi[all]',
+    'pyyaml',
+    'typer'
 ]
 
 tests_require = [
@@ -54,7 +56,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'sandbox-storage=sandbox_storage.main:main',
+            'sandbox-storage=sandbox_storage.main:run_cli',
         ],
     },
 )
