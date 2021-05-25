@@ -14,16 +14,21 @@
 
 from fastapi import FastAPI
 import uvicorn
+from .config import Settings
 
+settings = Settings()
 app = FastAPI()
+
 
 @app.get('/')
 def index():
     return ('Hello World')
 
+
 @app.get('/objects/{DRS_ID}')
 def get_objects_id(DRS_ID: str):
     return {'DRS_ID': DRS_ID}
+
 
 @app.get('/objects/{DRS_ID}/access/{access_id}')
 def get_objects_id_access_id(DRS_ID: str, access_id: str):
@@ -35,9 +40,9 @@ def main():
     """
     uvicorn.run(
         app,
-        host="127.0.0.1",
-        port=8080,
-        log_level="info"
+        host=settings.host,
+        port=settings.port,
+        log_level=settings.log_level
     )
 
 
