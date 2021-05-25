@@ -1,7 +1,7 @@
 #!/bin/bash
 # install service in dev container
 
-cd /workspaces/sandbox-storage
+cd /workspace
 
 # install client in edit mode 
 # with testing dependencies:
