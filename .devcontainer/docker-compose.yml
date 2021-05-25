@@ -1,0 +1,62 @@
+version: '3.2'
+services:
+  storage_service:
+
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    
+    command: /bin/sh -c "while sleep 1000; do :; done"
+      
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+
+    environment:
+      DB_URL: postgresql://admin:admin@postgresql/storage
+      S3_URL: http://localstack:4566 # to be adapted
+
+    volumes:
+      - ..:/workspace:cached
+
+  postgresql:
+    image: "postgres:13-alpine"
+    volumes:
+      - type: volume
+        source: db_fs
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    command: ['postgres', '-c', 'work_mem=512MB']
+    deploy:
+      endpoint_mode : dnsrr
+
+  s3_localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=eu-west-1
+      - AWS_DEFAULT_REGION=eu-west-1
+      - HOSTNAME_EXTERNAL=localhost # accessible at localhost
+      - USE_SSL=false
+      - DATA_DIR=/tmp/localstack/data
+      - DEBUG=1
+    volumes:
+      - type: volume
+        source: s3_fs
+        target: /tmp/localstack
+        volume:
+          nocopy: true
+
+volumes:
+  db_fs:
+    external: false
+  s3_fs:
+    external: false
