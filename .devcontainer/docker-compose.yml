@@ -16,7 +16,7 @@ services:
 
     environment:
       DB_URL: postgresql://admin:admin@postgresql/storage
-      S3_URL: http://localstack:4566 # to be adapted
+      S3_URL: http://s3_localstack:4566 # to be adapted
 
     volumes:
       - ..:/workspace:cached
