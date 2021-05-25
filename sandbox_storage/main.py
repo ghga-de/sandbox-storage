@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -28,3 +29,17 @@ def get_objects_id(DRS_ID: str):
 def get_objects_id_access_id(DRS_ID: str, access_id: str):
     return {'DRS_ID': DRS_ID, 'access_id': access_id}
 
+
+def main():
+    """Starts backend server
+    """
+    uvicorn.run(
+        app,
+        host="127.0.0.1",
+        port=8080,
+        log_level="info"
+    )
+
+
+if __name__ == "__main__":
+    main()
