@@ -26,4 +26,4 @@ def get_objects_id(DRS_ID: str):
 
 @app.get('/objects/{DRS_ID}/access/{access_id}')
 def get_objects_id_access_id(DRS_ID: str, access_id: str):
-    return {'DRS_ID': DRS_ID, 'access_id': access_id}#
+    return {'DRS_ID': DRS_ID, 'access_id': access_id}
