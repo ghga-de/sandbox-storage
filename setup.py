@@ -23,7 +23,8 @@ with open(os.path.join(here, 'README.md')) as f:
 requires = [
     'fastapi[all]',
     'pyyaml',
-    'typer'
+    'typer',
+    'alembic'
 ]
 
 tests_require = [
