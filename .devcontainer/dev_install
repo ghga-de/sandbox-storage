@@ -5,6 +5,4 @@ cd /workspace
 
 # install client in edit mode 
 # with testing dependencies:
-pip install \
-    fastapi \
-    hypercorn
+pip install -e ".[testing]"

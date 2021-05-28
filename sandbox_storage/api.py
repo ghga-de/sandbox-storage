@@ -1,4 +1,4 @@
-# Copyright 2021 Universität Tübingen, DKFZ for the German Human Genome-Phenome Archive (GHGA)
+# Copyright 2021 Universität Tübingen, DKFZ and EMBL for the German Human Genome-Phenome Archive (GHGA)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from fastapi import FastAPI
-
-app = FastAPI()
+from .main import app
 
 @app.get('/')
 def index():
     return ('Hello World')
 
+
 @app.get('/objects/{DRS_ID}')
 def get_objects_id(DRS_ID: str):
     return {'DRS_ID': DRS_ID}
 
+
 @app.get('/objects/{DRS_ID}/access/{access_id}')
 def get_objects_id_access_id(DRS_ID: str, access_id: str):
     return {'DRS_ID': DRS_ID, 'access_id': access_id}
-

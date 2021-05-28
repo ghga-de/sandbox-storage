@@ -1,3 +1,2 @@
 #!/bin/bash
-cd /workspace
-hypercorn --reload sandbox-storage/main:app
+sandbox-storage --config /workspace/.devcontainer/dev_config.yaml
