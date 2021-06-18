@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .main import app
+from .__main__ import app
 
 @app.get('/')
 def index():

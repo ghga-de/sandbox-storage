@@ -35,7 +35,9 @@ def run(
     if config:
         # overwrite settings
         settings = get_settings(config_yaml=config)
-
+    
+    from .api import index, get_objects_id, get_objects_id_access_id
+    
     uvicorn.run(
         app,
         host=settings.host,
