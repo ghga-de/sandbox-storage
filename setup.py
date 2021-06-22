@@ -24,7 +24,8 @@ requires = [
     'fastapi[all]',
     'pyyaml',
     'typer',
-    'alembic'
+    'alembic',
+    'psycopg2==2.9.1'
 ]
 
 tests_require = [
