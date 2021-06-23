@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.9
+FROM python:3.9-slim
 
-RUN apt-get update -qq -y \
-    && apt-get install -y \
-        postgresql-client
-
+# copy and install package from source
 COPY . /app
 WORKDIR /app
-
 RUN pip install .
 
-ENTRYPOINT [ "sanbox-storage" ]
+# create new user and execute as that user:
+RUN useradd --create-home appuser
+WORKDIR /home/appuser
+USER appuser
+
+ENTRYPOINT [ "sandbox-storage" ]
 
