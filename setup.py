@@ -22,8 +22,8 @@ with open(os.path.join(here, 'README.md')) as f:
 
 requires = [
     'fastapi==0.65.2',
-    'uvicorn[standard]==0.13.4'
-    'pyyaml==5.4.1',
+    'uvicorn[standard]==0.13.4',
+    'PyYAML==5.4.1',
     'typer==0.3.2'
 ]
 
