@@ -27,6 +27,11 @@ requires = [
     'typer==0.3.2',
     'psycopg2==2.9.1',
     'sqlalchemy==1.4.19',
+    'psycopg2==2.9.1'
+    'pyramid==2.0',
+    'pyramid_beaker==0.8',
+    'pyramid_openapi3==0.11',
+    'openapi-core<0.14',
 ]
 
 testing_require = [
