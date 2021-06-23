@@ -3,6 +3,7 @@
 
 cd /workspace
 
-# install client in edit mode 
-# with testing dependencies:
-pip install -e ".[testing]"
+pip install \
+    -e \ # install in edit mode
+    --use-feature=in-tree-build \ # use future way of installing packages
+    ".[testing]" # install with testing dependencies
