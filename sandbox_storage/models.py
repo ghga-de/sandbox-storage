@@ -22,3 +22,4 @@ class DrsObject(Base):
     id               = Column(Integer, primary_key=True)
     drs_id           = Column(String, nullable=False)
     path             = Column(String, nullable=False)
+    
