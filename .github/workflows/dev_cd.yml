@@ -75,9 +75,9 @@ jobs:
             -H 'Accept: application/vnd.github.everest-preview+json' \
             -u '${{ secrets.DEPLOYMENT_UPDATE_TOKEN }}' \
             --data '{
-              "event_type": "new_chart_version", 
+              "event_type": "new_app_version", 
               "client_payload": {
                 "chart_name": "${{ github.event.repository.name }}", 
-                "new_version": "${{ needs.get_commit_version.outputs.version }}"
+                "new_app_version": "${{ needs.get_commit_version.outputs.version }}"
               } 
             }'
