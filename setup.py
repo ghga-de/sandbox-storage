@@ -28,9 +28,8 @@ requires = [
 ]
 
 testing_require = [
-    'pytest==6.2.4'
+    'pytest==6.2.4',
     'pytest-cov==2.12.1',
-    'requests==6.2.4',
     'mypy==0.910',
 ]
 

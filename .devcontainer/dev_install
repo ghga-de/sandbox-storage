@@ -3,7 +3,10 @@
 
 cd /workspace
 
+# install in edit mode
+# use future way of installing packages
+# install with testing dependencies
 pip install \
-    -e \ # install in edit mode
-    --use-feature=in-tree-build \ # use future way of installing packages
-    ".[testing]" # install with testing dependencies
+    --use-feature=in-tree-build \
+    -e \
+    ".[testing]" 
