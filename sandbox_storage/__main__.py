@@ -15,23 +15,25 @@
 from os import strerror
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
-from pyramid.response import Response
 from pyramid.view import view_config
 import typer
 from typing import Optional
 
 
-@view_config(renderer='json')
+@view_config(route_name="hello", renderer='json')
 def hello_world(request):
     return {'content': 'Hello World!'}
 
-@view_config(renderer='json')
-def get_objects_id(request, DRS_ID: str):
-    return {'DRS_ID': DRS_ID}
+@view_config(route_name="objects_id", renderer='json')
+def get_objects_id(request):
+    drs_id = request.matchdict['DRS_ID']
+    return {'DRS_ID_': drs_id}
 
-@view_config(renderer='json')
-def get_objects_id_access_id(request, DRS_ID: str, access_id: str):
-    return {'DRS_ID': DRS_ID, 'access_id': access_id}
+@view_config(route_name="objects_id_access_id", renderer='json')
+def get_objects_id_access_id(request):
+    drs_id = request.matchdict['DRS_ID']
+    access_id = request.matchdict['access_id']
+    return {'DRS_ID': drs_id, 'access_id': access_id}
 
 def run(
     config: Optional[str] = typer.Option(
@@ -43,11 +45,11 @@ def run(
     """
     with Configurator() as config:
         config.add_route('hello', '/')
-        config.add_view(hello_world, route_name='hello')
+        config.add_view(hello_world, route_name='hello', renderer='json')
         config.add_route('objects_id', '/objects/{DRS_ID}')
-        config.add_view(get_objects_id, route_name='objects_id')
+        config.add_view(get_objects_id, route_name='objects_id', renderer='json')
         config.add_route('objects_id_access_id', '/objects/{DRS_ID}/access/{access_id}')
-        config.add_view(get_objects_id_access_id, route_name='objects_id_access_id')
+        config.add_view(get_objects_id_access_id, route_name='objects_id_access_id', renderer='json')
         app = config.make_wsgi_app()
     server = make_server('127.0.0.1', 8080, app)
     server.serve_forever()
