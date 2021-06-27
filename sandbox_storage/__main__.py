@@ -12,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import uvicorn
+from wsgiref.simple_server import make_server
+from pyramid.config import Configurator
+from pyramid.response import Response
 import typer
-from fastapi import FastAPI
 from typing import Optional
 
-from .config import get_settings
 
-settings = get_settings()
-app = FastAPI()
-
+def hello_world(request):
+    return Response('Hello World!')
 
 def run(
     config: Optional[str] = typer.Option(
@@ -31,20 +30,12 @@ def run(
 ):
     """Starts backend server
     """
-    global settings
-    if config:
-        # overwrite settings
-        settings = get_settings(config_yaml=config)
-    
-    from .api import index, get_objects_id, get_objects_id_access_id
-    
-    uvicorn.run(
-        app,
-        host=settings.host,
-        port=settings.port,
-        log_level=settings.log_level
-    )
-
+    with Configurator() as config:
+        config.add_route('hello', '/')
+        config.add_view(hello_world, route_name='hello')
+        app = config.make_wsgi_app()
+    server = make_server('127.0.0.1', 8080, app)
+    server.serve_forever()
 
 def run_cli():
     typer.run(run)
