@@ -12,15 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from os import strerror
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
+from pyramid.view import view_config
 import typer
 from typing import Optional
 
 
+@view_config(renderer='json')
 def hello_world(request):
-    return Response('Hello World!')
+    return {'content': 'Hello World!'}
+
+@view_config(renderer='json')
+def get_objects_id(request, DRS_ID: str):
+    return {'DRS_ID': DRS_ID}
+
+@view_config(renderer='json')
+def get_objects_id_access_id(request, DRS_ID: str, access_id: str):
+    return {'DRS_ID': DRS_ID, 'access_id': access_id}
 
 def run(
     config: Optional[str] = typer.Option(
@@ -33,6 +44,10 @@ def run(
     with Configurator() as config:
         config.add_route('hello', '/')
         config.add_view(hello_world, route_name='hello')
+        config.add_route('objects_id', '/objects/{DRS_ID}')
+        config.add_view(get_objects_id, route_name='objects_id')
+        config.add_route('objects_id_access_id', '/objects/{DRS_ID}/access/{access_id}')
+        config.add_view(get_objects_id_access_id, route_name='objects_id_access_id')
         app = config.make_wsgi_app()
     server = make_server('127.0.0.1', 8080, app)
     server.serve_forever()

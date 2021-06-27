@@ -1,2 +1,2 @@
 #!/bin/bash
-sandbox-storage #--config /workspace/.devcontainer/dev_config.yaml
+sandbox-storage --config /workspace/.devcontainer/dev_config.yaml
