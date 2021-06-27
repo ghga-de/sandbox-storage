@@ -12,20 +12,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# from .__main__ import app
-from fastapi import FastAPI
-app = FastAPI()
-
-@app.get('/health')
-def index():
-    return {'status': 'OK'}
-
-
-@app.get('/objects/{DRS_ID}')
-def get_objects_id(DRS_ID: str):
-    return {'DRS_ID': DRS_ID}
-
-
-@app.get('/objects/{DRS_ID}/access/{access_id}')
-def get_objects_id_access_id(DRS_ID: str, access_id: str):
-    return {'DRS_ID': DRS_ID, 'access_id': access_id}
