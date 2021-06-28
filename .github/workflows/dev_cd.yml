@@ -85,7 +85,7 @@ jobs:
               "event_type": "new_app_version", 
               "client_payload": {
                 "chart_name": "${{ github.event.repository.name }}", 
-                "context": "${{ needs.get_commit_version.outputs.branch }}"
+                "context": "${{ needs.get_commit_version.outputs.branch }}",
                 "new_app_version": "${{ needs.get_commit_version.outputs.version }}"
               } 
             }'
