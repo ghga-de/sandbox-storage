@@ -21,17 +21,19 @@ with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
 
 requires = [
-    'fastapi[all]',
-    'pyyaml',
-    'typer',
-    'alembic',
-    'psycopg2==2.9.1'
+    'fastapi==0.65.2',
+    'uvicorn[standard]==0.13.4',
+    'PyYAML==5.4.1',
+    'typer==0.3.2',
+    'psycopg2==2.9.1',
+    'sqlalchemy==1.4.19',
 ]
 
-tests_require = [
-    'pytest-cov',
-    'requests',
-    'mypy',
+testing_require = [
+    'pytest==6.2.4',
+    'pytest-cov==2.12.1',
+    'mypy==0.910',
+    'alembic==1.6.5',
 ]
 
 setup(
@@ -49,7 +51,7 @@ setup(
     zip_safe               = False,
     install_requires       = requires,
     extras_require={
-        'testing': tests_require,
+        'testing': testing_require,
     },
     classifiers=[
         'Programming Language :: Python',

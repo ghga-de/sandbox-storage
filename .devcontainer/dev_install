@@ -3,11 +3,16 @@
 
 cd /workspace
 
-# install client in edit mode 
-# with testing dependencies:
-pip install -e ".[testing]"
+# install in edit mode
+# use future way of installing packages
+# install with testing dependencies
+pip install \
+    --use-feature=in-tree-build \
+    -e \
+    ".[testing]"
 
 cd database_migration
 
 # Check if the database has been initialized and if not initialize it
 alembic -c alembic.ini upgrade head
+
