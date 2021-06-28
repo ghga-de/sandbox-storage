@@ -32,6 +32,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
+      POSTGRES_DB: storage
     command: ['postgres', '-c', 'work_mem=512MB']
     deploy:
       endpoint_mode : dnsrr
