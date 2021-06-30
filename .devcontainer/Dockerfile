@@ -5,8 +5,8 @@ ARG VARIANT="3.9"
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 
 # Install other dependencies:
-RUN apt-get update -qq -y \
-    && apt-get install -y \
+RUN apt update -qq -y \
+    && apt install -y \
         postgresql-client
 
 # Copy install and launcher script to bin:
