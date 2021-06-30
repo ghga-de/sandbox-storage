@@ -57,11 +57,15 @@ def yaml_settings_factory(
     
     return yaml_settings
 
+class Settings(BaseSettings):
+    host: str = "127.0.0.1"
+    port: int = 8080
+    log_level: LogLevel = "info"
 
 def get_settings(
     config_yaml: Optional[str] = None,
     **kwargs,
-) -> BaseSettings:
+) -> Settings:
     """A wrapper around pydantics BaseSettings that allows to specify the path to a
     yaml file for reading config parameters. 
     Priorities of config sources are as follows (highest Priority first):
@@ -81,11 +85,7 @@ def get_settings(
 
     """
 
-    class Settings(BaseSettings):
-        host: str = "127.0.0.1"
-        port: int = 8080
-        log_level: LogLevel = "info"
-
+    class ModSettings(Settings):
         class Config:
             # add this prefix to all variable names to
             # define them as environment variables:
@@ -105,4 +105,4 @@ def get_settings(
                     yaml_settings_factory(config_yaml),
                 )
     
-    return Settings(**kwargs)
+    return ModSettings(**kwargs)
