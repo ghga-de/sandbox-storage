@@ -30,7 +30,15 @@ requires = [
     "sqlalchemy==1.4.19",
 ]
 
-testing_require = ["alembic==1.6.5", "pytest", "pytest-cov", "mypy", "pylint", "flake8"]
+testing_require = [
+    "alembic==1.6.5",
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "pylint",
+    "flake8",
+    "black",
+]
 
 setup(
     name="sandbox_storage",
