@@ -1,4 +1,5 @@
-# Copyright 2021 Universität Tübingen, DKFZ and EMBL for the German Human Genome-Phenome Archive (GHGA)
+# Copyright 2021 Universität Tübingen, DKFZ and EMBL
+# for the German Human Genome-Phenome Archive (GHGA)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .__main__ import app
+"""API Endpoints
+"""
 
-@app.get('/')
+from .__main__ import app  # pylint: disable=cyclic-import
+
+
+@app.get("/")
 def index():
-    return ('Hello World')
+    """Test endpoint to display hello world"""
+    return "Hello World"
 
 
-@app.get('/objects/{DRS_ID}')
-def get_objects_id(DRS_ID: str):
-    return {'DRS_ID': DRS_ID}
+@app.get("/objects/{DRS_ID}")
+def get_objects_id(DRS_ID: str):  # pylint: disable=invalid-name
+    """Get a specific DRS objects"""
+    return {"DRS_ID": DRS_ID}
 
 
-@app.get('/objects/{DRS_ID}/access/{access_id}')
-def get_objects_id_access_id(DRS_ID: str, access_id: str):
-    return {'DRS_ID': DRS_ID, 'access_id': access_id}
+@app.get("/objects/{DRS_ID}/access/{access_id}")
+def get_objects_id_access_id(
+    DRS_ID: str, access_id: str
+):  # pylint: disable=invalid-name
+    """Get details on a specific access method for a DRS object"""
+    return {"DRS_ID": DRS_ID, "access_id": access_id}
