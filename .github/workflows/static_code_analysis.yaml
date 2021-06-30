@@ -14,7 +14,7 @@ jobs:
           python-version: 3.8
       - name: Install Dependencies
         run: |
-          pip install mypy pylint flake8
+          pip install ".[testing]"
       - name: mypy
         run: |
           mypy --show-error-codes --disable-error-code import .
