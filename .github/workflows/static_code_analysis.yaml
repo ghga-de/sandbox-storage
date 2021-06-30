@@ -2,6 +2,9 @@ name: Static Code Analysis
 
 on: [push, pull_request]
 
+env:
+  MAIN_SRC_DIR: ./sandbox_storage
+
 jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
@@ -20,10 +23,13 @@ jobs:
           mypy --show-error-codes --disable-error-code import .
       - name: pylint
         run: |
-          pylint ./sandbox_storage
+          pylint "${MAIN_SRC_DIR}"
       - name: flake8
         run: |
           flake8 .
       - name: black
         run: |
           black --check .
+      - name: bandit
+        run: |
+          bandit -r "${MAIN_SRC_DIR}"

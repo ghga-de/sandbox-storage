@@ -38,6 +38,7 @@ testing_require = [
     "pylint",
     "flake8",
     "black",
+    "bandit",
 ]
 
 setup(
