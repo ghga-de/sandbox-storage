@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.9-slim
+FROM python:3.9.6-buster
 
 # copy and install package from source
 COPY . /app
 WORKDIR /app
-RUN pip install .
+RUN pip install --use-feature=in-tree-build .
 
 # create new user and execute as that user:
 RUN useradd --create-home appuser
