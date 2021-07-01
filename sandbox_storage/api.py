@@ -12,3 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pyramid.view import view_config
+
+@view_config(route_name="hello", renderer='json')
+def index(request):
+    return {'content': 'Hello World!'}
+
+@view_config(route_name="objects_id", renderer='json')
+def get_objects_id(request):
+    drs_id = request.matchdict['DRS_ID']
+    return {'DRS_ID_': drs_id}
+
+@view_config(route_name="objects_id_access_id", renderer='json')
+def get_objects_id_access_id(request):
+    drs_id = request.matchdict['DRS_ID']
+    access_id = request.matchdict['access_id']
+    return {'DRS_ID': drs_id, 'access_id': access_id}

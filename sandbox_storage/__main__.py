@@ -19,21 +19,12 @@ from pyramid.view import view_config
 import typer
 from typing import Optional
 
+from .api import (  # noqa: F401 pylint: disable=unused-import,import-outside-toplevel
 
-@view_config(route_name="hello", renderer='json')
-def hello_world(request):
-    return {'content': 'Hello World!'}
-
-@view_config(route_name="objects_id", renderer='json')
-def get_objects_id(request):
-    drs_id = request.matchdict['DRS_ID']
-    return {'DRS_ID_': drs_id}
-
-@view_config(route_name="objects_id_access_id", renderer='json')
-def get_objects_id_access_id(request):
-    drs_id = request.matchdict['DRS_ID']
-    access_id = request.matchdict['access_id']
-    return {'DRS_ID': drs_id, 'access_id': access_id}
+        index,
+        get_objects_id,
+        get_objects_id_access_id,
+    )
 
 def run(
     config: Optional[str] = typer.Option(
