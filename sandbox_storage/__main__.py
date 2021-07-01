@@ -36,7 +36,7 @@ def run(
     """
     with Configurator() as config:
         config.add_route('hello', '/')
-        config.add_view(hello_world, route_name='hello', renderer='json')
+        config.add_view(index, route_name='hello', renderer='json')
         config.add_route('objects_id', '/objects/{DRS_ID}')
         config.add_view(get_objects_id, route_name='objects_id', renderer='json')
         config.add_route('objects_id_access_id', '/objects/{DRS_ID}/access/{access_id}')
