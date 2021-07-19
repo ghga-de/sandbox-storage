@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .__main__ import app
+# from .__main__ import app
+from fastapi import FastAPI
+app = FastAPI()
 
-@app.get('/')
+@app.get('/health')
 def index():
-    return ('Hello World')
+    return {'status': 'OK'}
 
 
 @app.get('/objects/{DRS_ID}')

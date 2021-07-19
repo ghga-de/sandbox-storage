@@ -14,13 +14,12 @@
 
 import uvicorn
 import typer
-from fastapi import FastAPI
 from typing import Optional
 
+from .api import app
 from .config import get_settings
 
 settings = get_settings()
-app = FastAPI()
 
 
 def run(
