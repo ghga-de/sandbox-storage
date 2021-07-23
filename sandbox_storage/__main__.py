@@ -17,6 +17,7 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.view import view_config
 import typer
+import pyramid_openapi3
 from typing import Optional
 
 from .api import (  # noqa: F401 pylint: disable=unused-import,import-outside-toplevel
@@ -25,6 +26,8 @@ from .api import (  # noqa: F401 pylint: disable=unused-import,import-outside-to
         get_objects_id,
         get_objects_id_access_id,
     )
+
+base_url = '/ghga/drs/v1'
 
 def run(
     config: Optional[str] = typer.Option(
@@ -35,12 +38,18 @@ def run(
     """Starts backend server
     """
     with Configurator() as config:
+
+        config.include("pyramid_openapi3")
+        config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml', route='/ghga/drs/v1/openapi.yaml')
+        config.pyramid_openapi3_add_explorer(base_url)
+
         config.add_route('hello', '/')
         config.add_view(index, route_name='hello', renderer='json')
-        config.add_route('objects_id', '/objects/{DRS_ID}')
+        config.add_route('objects_id', base_url + '/objects/{object_id}')
         config.add_view(get_objects_id, route_name='objects_id', renderer='json')
-        config.add_route('objects_id_access_id', '/objects/{DRS_ID}/access/{access_id}')
+        config.add_route('objects_id_access_id', base_url + '/objects/{object_id}/access/{access_id}')
         config.add_view(get_objects_id_access_id, route_name='objects_id_access_id', renderer='json')
+        config.scan()
         app = config.make_wsgi_app()
     server = make_server('127.0.0.1', 8080, app)
     server.serve_forever()
