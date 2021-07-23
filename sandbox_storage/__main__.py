@@ -6,13 +6,12 @@
 from typing import Optional
 import uvicorn
 import typer
-from fastapi import FastAPI
+from typing import Optional
 
+from .api import app
 from .config import get_settings
 
-settings = get_settings()  # pylint: disable=invalid-name
-app = FastAPI()
-
+settings = get_settings()
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
