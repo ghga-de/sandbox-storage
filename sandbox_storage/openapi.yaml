@@ -4,8 +4,8 @@ info:
   description: https://github.com/ga4gh/data-repository-service-schemas
   termsOfService: https://www.ga4gh.org/terms-and-conditions/
   contact:
-    name: GA4GH Cloud Work Stream
-    email: ga4gh-cloud@ga4gh.org
+    name: Dummy
+    email: dummy@test.de
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/ga4gh/data-repository-service-schemas/master/LICENSE
