@@ -14,16 +14,16 @@
 
 from pyramid.view import view_config
 
-@view_config(route_name="hello", renderer='json')
+@view_config(route_name="hello", renderer='json', openapi="true")
 def index(request):
     return {'content': 'Hello World!'}
 
-@view_config(route_name="objects_id", renderer='json')
+@view_config(route_name="objects_id", renderer='json', openapi="true")
 def get_objects_id(request):
     drs_id = request.matchdict['DRS_ID']
     return {'DRS_ID_': drs_id}
 
-@view_config(route_name="objects_id_access_id", renderer='json')
+@view_config(route_name="objects_id_access_id", renderer='json', openapi="true")
 def get_objects_id_access_id(request):
     drs_id = request.matchdict['DRS_ID']
     access_id = request.matchdict['access_id']

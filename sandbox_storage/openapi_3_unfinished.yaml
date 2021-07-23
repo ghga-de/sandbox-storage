@@ -1,5 +1,4 @@
-swagger: '2.0'
-basePath: '/ghga/drs/v1'
+openapi: 3.0.0
 info:
   title: Data Repository Service
   version: 1.1.0
@@ -11,12 +10,10 @@ info:
   license:
     name: Apache 2.0
     url: 'https://raw.githubusercontent.com/ga4gh/data-repository-service-schemas/master/LICENSE'
-schemes:
-  - https
-consumes:
-  - application/json
-produces:
-  - application/json
+
+
+servers:
+  - url: '/ghga/drs/v1'
 security:
   - {}
   - authToken: []
