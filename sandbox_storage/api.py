@@ -18,11 +18,14 @@
 
 # from .__main__ import app
 from fastapi import FastAPI
+
 app = FastAPI()
 
-@app.get('/health')
+
+@app.get("/health")
 def index():
-    return {'status': 'OK'}
+    """Health check"""
+    return {"status": "OK"}
 
 
 @app.get("/objects/{DRS_ID}")
