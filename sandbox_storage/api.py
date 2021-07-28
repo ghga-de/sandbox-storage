@@ -16,13 +16,15 @@
 """API Endpoints
 """
 
-from .__main__ import app  # pylint: disable=cyclic-import
+from fastapi import FastAPI
+
+app = FastAPI()
 
 
-@app.get("/")
+@app.get("/health")
 def index():
-    """Test endpoint to display hello world"""
-    return "Hello World"
+    """Health check"""
+    return {"status": "OK"}
 
 
 @app.get("/objects/{DRS_ID}")

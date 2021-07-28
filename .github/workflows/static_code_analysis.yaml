@@ -1,6 +1,6 @@
 name: Static Code Analysis
 
-on: [push, pull_request]
+on: push
 
 env:
   MAIN_SRC_DIR: ./sandbox_storage

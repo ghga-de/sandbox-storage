@@ -8,11 +8,8 @@ import uvicorn
 import typer
 from fastapi import FastAPI
 
+from .api import app
 from .config import get_settings
-
-settings = get_settings()  # pylint: disable=invalid-name
-app = FastAPI()
-
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
