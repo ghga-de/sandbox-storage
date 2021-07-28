@@ -1,4 +1,5 @@
-# Copyright 2021 Universität Tübingen, DKFZ and EMBL for the German Human Genome-Phenome Archive (GHGA)
+# Copyright 2021 Universität Tübingen, DKFZ and EMBL
+# for the German Human Genome-Phenome Archive (GHGA)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,58 +13,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Parsing of config parameters from different sources
+"""
+
 import os
 import pathlib
-from pydantic import BaseSettings
 from typing import Literal, Dict, Any, Optional, Callable
+from pydantic import BaseSettings
 import yaml
 
 # A abbreviation of this app:
-config_prefix = "sbstorage"
+CONFIG_PREFIX = "sbstorage"
 # When defined via enviroment variables, all
 # variables have to be prefixed with this string
-# (like this "{config_prefix}_{actual_variable_name}").
-# Moreover, this prefix is used to derive the default 
-# location for the config yaml file ("~/.{config_prefix}.yaml"):
-default_config_yaml = os.path.join(pathlib.Path.home(), f".{config_prefix}.yaml")
+# (like this "{CONFIG_PREFIX}_{actual_variable_name}").
+# Moreover, this prefix is used to derive the default
+# location for the config yaml file ("~/.{CONFIG_PREFIX}.yaml"):
+default_config_yaml = os.path.join(pathlib.Path.home(), f".{CONFIG_PREFIX}.yaml")
 
 # type alias for log level parameter
-LogLevel = Literal[
-    'critical', 
-    'error', 
-    'warning', 
-    'info',
-    'debug',
-    'trace'
-]
+LogLevel = Literal["critical", "error", "warning", "info", "debug", "trace"]
 
 
 def yaml_settings_factory(
-    config_yaml: Optional[str] = None
+    config_yaml: Optional[str] = None,
 ) -> Callable[[BaseSettings], Dict[str, Any]]:
     """
     A factory for source methods for Pydantic's BaseSettings Config that load
     settings from a yaml file.
-    """   
+    """
     if config_yaml is None and os.path.isfile(default_config_yaml):
         config_yaml = default_config_yaml
 
-    def yaml_settings(settings: BaseSettings)-> Dict[str, Any]:
-        if config_yaml is None:
+    def yaml_settings(
+        settings: BaseSettings,  # pylint: disable=unused-argument
+    ) -> Dict[str, Any]:
+        if config_yaml is None:  # pylint: disable=no-else-return
             return {}
         else:
             with open(config_yaml, "r") as yaml_file:
                 return yaml.safe_load(yaml_file)
-    
+
     return yaml_settings
+
+
+class Settings(BaseSettings):
+    """Settings with defaults"""
+
+    host: str = "127.0.0.1"
+    port: int = 8080
+    log_level: LogLevel = "info"
 
 
 def get_settings(
     config_yaml: Optional[str] = None,
     **kwargs,
-) -> BaseSettings:
+) -> Settings:
     """A wrapper around pydantics BaseSettings that allows to specify the path to a
-    yaml file for reading config parameters. 
+    yaml file for reading config parameters.
     Priorities of config sources are as follows (highest Priority first):
         - parameters passed using **kwargs
         - environment variables
@@ -72,8 +79,8 @@ def get_settings(
         - defaults
 
     Args:
-        config_yaml (Optional[str], optional): Path to config yaml. 
-            Defaults to "~/.{config_prefix}.yaml"
+        config_yaml (Optional[str], optional): Path to config yaml.
+            Defaults to "~/.{CONFIG_PREFIX}.yaml"
         **kwargs: All other arguments are passed on to the Settings class.
 
     Returns:
@@ -81,15 +88,17 @@ def get_settings(
 
     """
 
-    class Settings(BaseSettings):
-        host: str = "127.0.0.1"
-        port: int = 8080
-        log_level: LogLevel = "info"
+    class ModSettings(Settings):
+        """Modify original Settings class to include a
+        config subclass
+        """
 
         class Config:
+            """A Config class for Pydantic Settings"""
+
             # add this prefix to all variable names to
             # define them as environment variables:
-            env_prefix = f'{config_prefix}_'
+            env_prefix = f"{CONFIG_PREFIX}_"
 
             @classmethod
             def customise_sources(
@@ -98,11 +107,14 @@ def get_settings(
                 env_settings,
                 file_secret_settings,
             ):
+                """Overwrite parameter sources to include
+                the custom yaml source function
+                """
                 return (
                     init_settings,
                     env_settings,
                     file_secret_settings,
                     yaml_settings_factory(config_yaml),
                 )
-    
-    return Settings(**kwargs)
+
+    return ModSettings(**kwargs)
