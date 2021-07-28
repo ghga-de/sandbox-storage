@@ -363,13 +363,15 @@ components:
           example: drs://drs.example.org/314159
           items:
             type: string
-        contents:
-          type: array
-          description: If this ContentsObject describes a nested bundle and the caller
-            specified "?expand=true" on the request, then this contents array must
-            be present and describe the objects within the nested bundle.
-          # items:
-          #   $ref: '#/components/schemas/ContentsObject'
+        # Removed the possibility of an object containing multiple other objects. 
+        # Will not be necessary for the time beeing and causes problems because of a circle-reference.
+        # contents:
+        #   type: array
+        #   description: If this ContentsObject describes a nested bundle and the caller
+        #     specified "?expand=true" on the request, then this contents array must
+        #     be present and describe the objects within the nested bundle.
+        #   items:
+        #     $ref: '#/components/schemas/ContentsObject'
   securitySchemes:
     authToken:
       type: apiKey
