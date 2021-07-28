@@ -6,10 +6,10 @@
 from typing import Optional
 import uvicorn
 import typer
-from fastapi import FastAPI
 
 from .api import app
 from .config import get_settings
+
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
