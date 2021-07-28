@@ -10,6 +10,8 @@ import typer
 from .api import app
 from .config import get_settings
 
+settings = get_settings()
+
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
