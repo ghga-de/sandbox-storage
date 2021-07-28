@@ -35,7 +35,7 @@ LogLevel = Literal["critical", "error", "warning", "info", "debug", "trace"]
 
 
 def yaml_settings_factory(
-    config_yaml: Optional[str] = None,
+    config_yaml: Optional[Path] = None,
 ) -> Callable[[BaseSettings], Dict[str, Any]]:
     """
     A factory for source methods for Pydantic's BaseSettings Config that load
