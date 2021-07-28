@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
+from pathlib import Path
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, "README.md")) as f:
+HERE = Path(__file__).parent.resolve()
+with open(HERE / "README.md") as f:
     README = f.read()
 
 requires = [

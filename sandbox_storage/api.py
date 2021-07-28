@@ -16,7 +16,6 @@
 """API Endpoints
 """
 
-# from .__main__ import app
 from fastapi import FastAPI
 
 app = FastAPI()

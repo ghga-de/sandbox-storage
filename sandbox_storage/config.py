@@ -16,8 +16,7 @@
 """Parsing of config parameters from different sources
 """
 
-import os
-import pathlib
+from pathlib import Path
 from typing import Literal, Dict, Any, Optional, Callable
 from pydantic import BaseSettings
 import yaml
@@ -29,21 +28,21 @@ CONFIG_PREFIX = "sbstorage"
 # (like this "{CONFIG_PREFIX}_{actual_variable_name}").
 # Moreover, this prefix is used to derive the default
 # location for the config yaml file ("~/.{CONFIG_PREFIX}.yaml"):
-default_config_yaml = os.path.join(pathlib.Path.home(), f".{CONFIG_PREFIX}.yaml")
+DEFAULT_CONFIG_YAML = Path.home() / f".{CONFIG_PREFIX}.yaml"
 
 # type alias for log level parameter
 LogLevel = Literal["critical", "error", "warning", "info", "debug", "trace"]
 
 
 def yaml_settings_factory(
-    config_yaml: Optional[str] = None,
+    config_yaml: Optional[Path] = None,
 ) -> Callable[[BaseSettings], Dict[str, Any]]:
     """
     A factory for source methods for Pydantic's BaseSettings Config that load
     settings from a yaml file.
     """
-    if config_yaml is None and os.path.isfile(default_config_yaml):
-        config_yaml = default_config_yaml
+    if config_yaml is None and DEFAULT_CONFIG_YAML.is_file():
+        config_yaml = DEFAULT_CONFIG_YAML
 
     def yaml_settings(
         settings: BaseSettings,  # pylint: disable=unused-argument
