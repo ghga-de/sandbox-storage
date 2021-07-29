@@ -14,27 +14,20 @@
 
 from os import strerror
 from wsgiref.simple_server import make_server
-import pyramid_openapi3
 from typing import Optional
 from .config import get_settings
 
 settings = get_settings()
 
-from .api import (
-        index,
-        get_health,
-        get_objects_id,
-        get_objects_id_access_id,
-        get_app,
-    )
-    
+from .api import get_app
+
+
 def run():
-    """Starts backend server
-    """
+    """Starts backend server"""
 
     server = make_server(settings.host, settings.port, get_app())
     server.serve_forever()
 
+
 if __name__ == "__main__":
     run()
-    
