@@ -11,7 +11,7 @@ info:
     url: https://raw.githubusercontent.com/ga4gh/data-repository-service-schemas/master/LICENSE
   version: 1.1.0
 servers:
-- url: /ghga/drs/v1
+- url: /ga4gh/drs/v1
 security:
 - {}
 - authToken: []
