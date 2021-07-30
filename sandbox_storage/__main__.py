@@ -44,11 +44,10 @@ def run(
         config.pyramid_openapi3_add_explorer(base_url)
 
         config.add_route('hello', '/')
-        config.add_view(index, route_name='hello', renderer='json')
         config.add_route('objects_id', base_url + '/objects/{object_id}')
-        config.add_view(get_objects_id, route_name='objects_id', renderer='json')
         config.add_route('objects_id_access_id', base_url + '/objects/{object_id}/access/{access_id}')
-        config.add_view(get_objects_id_access_id, route_name='objects_id_access_id', renderer='json')
+        config.scan(".")
+
         app = config.make_wsgi_app()
     server = make_server('127.0.0.1', 8080, app)
     server.serve_forever()
