@@ -19,15 +19,16 @@ from pyramid.view import view_config
 import typer
 import pyramid_openapi3
 from typing import Optional
+from .config import get_settings
 
-from .api import (  # noqa: F401 pylint: disable=unused-import,import-outside-toplevel
-
+from .api import ( 
         index,
         get_objects_id,
         get_objects_id_access_id,
     )
 
 base_url = '/ghga/drs/v1'
+settings = get_settings() 
 
 def run(
     config: Optional[str] = typer.Option(
@@ -49,7 +50,7 @@ def run(
         config.scan(".")
 
         app = config.make_wsgi_app()
-    server = make_server('127.0.0.1', 8080, app)
+    server = make_server(settings.host, settings.port, app)
     server.serve_forever()
 
 def run_cli():
@@ -57,3 +58,4 @@ def run_cli():
 
 if __name__ == "__main__":
     run_cli()
+    

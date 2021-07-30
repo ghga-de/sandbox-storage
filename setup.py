@@ -31,7 +31,7 @@ requires = [
     'pyramid==2.0',
     'pyramid_beaker==0.8',
     'pyramid_openapi3==0.11',
-    'openapi-core<0.14',
+    'openapi-core==0.14',
 ]
 
 testing_require = [

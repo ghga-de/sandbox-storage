@@ -28,3 +28,10 @@ def get_objects_id_access_id(request):
     object_id = request.matchdict['object_id']
     access_id = request.matchdict['access_id']
     return {'object_id': object_id, 'access_id': access_id}
+
+# @app.get("/health")
+# def index():
+#     """Health check"""
+#     return {"status": "OK"}
+
+
