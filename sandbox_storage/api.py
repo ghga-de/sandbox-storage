@@ -14,7 +14,7 @@
 
 from pyramid.view import view_config
 
-@view_config(route_name="hello", renderer='json', openapi=True, request_method="GET")
+@view_config(route_name="hello", renderer='json', openapi=False, request_method="GET")
 def index(request):
     return {'content': 'Hello World!'}
 
@@ -29,9 +29,7 @@ def get_objects_id_access_id(request):
     access_id = request.matchdict['access_id']
     return {'object_id': object_id, 'access_id': access_id}
 
-# @app.get("/health")
-# def index():
-#     """Health check"""
-#     return {"status": "OK"}
-
-
+@view_config(route_name="health", renderer='json', openapi=False, request_method="GET")
+def health():
+    """Health check"""
+    return {"status": "OK"}

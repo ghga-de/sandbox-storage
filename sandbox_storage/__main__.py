@@ -19,16 +19,14 @@ from pyramid.view import view_config
 import typer
 import pyramid_openapi3
 from typing import Optional
-from .config import get_settings
 
-from .api import ( 
+from .api import (
         index,
         get_objects_id,
         get_objects_id_access_id,
     )
 
 base_url = '/ghga/drs/v1'
-settings = get_settings() 
 
 def run(
     config: Optional[str] = typer.Option(
@@ -45,12 +43,14 @@ def run(
         config.pyramid_openapi3_add_explorer(base_url)
 
         config.add_route('hello', '/')
+        config.add_route('health', '/health')
+
         config.add_route('objects_id', base_url + '/objects/{object_id}')
         config.add_route('objects_id_access_id', base_url + '/objects/{object_id}/access/{access_id}')
         config.scan(".")
 
         app = config.make_wsgi_app()
-    server = make_server(settings.host, settings.port, app)
+    server = make_server('127.0.0.1', 8080, app)
     server.serve_forever()
 
 def run_cli():
