@@ -18,6 +18,9 @@ from pyramid.config import Configurator
 import pyramid_openapi3
 import typer
 from typing import Optional
+from .config import get_settings
+
+settings = get_settings()
 
 from .api import (
         index,
@@ -50,7 +53,7 @@ def run(
         config.scan(".")
 
         app = config.make_wsgi_app()
-    server = make_server('127.0.0.1', 8080, app)
+    server = make_server(settings.host, settings.port, app)
     server.serve_forever()
 
 def run_cli():
