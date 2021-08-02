@@ -15,13 +15,13 @@
 from os import strerror
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
-from pyramid.view import view_config
-import typer
 import pyramid_openapi3
+import typer
 from typing import Optional
 
 from .api import (
         index,
+        get_health,
         get_objects_id,
         get_objects_id_access_id,
     )

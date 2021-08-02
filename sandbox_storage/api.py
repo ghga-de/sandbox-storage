@@ -30,6 +30,6 @@ def get_objects_id_access_id(request):
     return {'object_id': object_id, 'access_id': access_id}
 
 @view_config(route_name="health", renderer='json', openapi=False, request_method="GET")
-def health():
+def get_health(request):
     """Health check"""
     return {"status": "OK"}
