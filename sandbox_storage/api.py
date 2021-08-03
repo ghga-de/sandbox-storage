@@ -26,15 +26,15 @@ def get_app():
     with Configurator() as config:
         config.include("pyramid_openapi3")
         config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml',
-            route='/ghga/drs/v1/openapi.yaml')
+                route='/ghga/drs/v1/openapi.yaml')
         config.pyramid_openapi3_add_explorer(base_url)
 
         config.add_route('hello', '/')
         config.add_route('health', '/health')
 
         config.add_route('objects_id', base_url + '/objects/{object_id}')
-        config.add_route('objects_id_access_id', base_url
-            + '/objects/{object_id}/access/{access_id}')
+        config.add_route('objects_id_access_id', base_url +
+                '/objects/{object_id}/access/{access_id}')
         config.scan(".")
 
     return config.make_wsgi_app()
