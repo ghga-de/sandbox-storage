@@ -16,7 +16,7 @@ from pyramid.view import view_config
 from pyramid.config import Configurator
 
 def get_app():
-    base_url = '/ghga/drs/v1'
+    base_url = '/ga4gh/drs/v1'
 
     with Configurator() as config:
         config.include("pyramid_openapi3")
