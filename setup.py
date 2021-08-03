@@ -1,4 +1,5 @@
-# Copyright 2021 Universität Tübingen, DKFZ and EMBL for the German Human Genome-Phenome Archive (GHGA)
+# Copyright 2021 Universität Tübingen, DKFZ and EMBL
+# for the German Human Genome-Phenome Archive (GHGA)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
+from pathlib import Path
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.md')) as f:
+HERE = Path(__file__).parent.resolve()
+with open(HERE / "README.md") as f:
     README = f.read()
 
 requires = [
@@ -35,33 +35,39 @@ requires = [
 ]
 
 testing_require = [
-    'pytest==6.2.4',
-    'pytest-cov==2.12.1',
-    'mypy==0.910',
-    'alembic==1.6.5',
+    "alembic==1.6.5",
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "pylint",
+    "flake8",
+    "black",
+    "bandit",
 ]
 
 setup(
-    name                   = 'sandbox_storage',
-    version                = '0.1.0',
-    description            = 'Sandbox-Storage - a DRS-compliant service for delivering files from S3',
-    long_description       = README,
-    author                 = 'German Human Genome Phenome Archive (GHGA)',
-    author_email           = 'contact@ghga.de',
-    url                    = '',
-    keywords               = '',
-    packages               = find_packages(),
-    license                = 'Apache 2.0',
-    include_package_data   = True,
-    zip_safe               = False,
-    install_requires       = requires,
+    name="sandbox_storage",
+    version="0.1.0",
+    description=(
+        "Sandbox-Storage - a DRS-compliant service for delivering files from S3"
+    ),
+    long_description=README,
+    author="German Human Genome Phenome Archive (GHGA)",
+    author_email="contact@ghga.de",
+    url="",
+    keywords="",
+    packages=find_packages(),
+    license="Apache 2.0",
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=requires,
     extras_require={
-        'testing': testing_require,
+        "testing": testing_require,
     },
     classifiers=[
-        'Programming Language :: Python',
-        'License :: OSI Approved :: Apache Software License',
-        'Topic :: Internet :: WWW/HTTP'
+        "Programming Language :: Python",
+        "License :: OSI Approved :: Apache Software License",
+        "Topic :: Internet :: WWW/HTTP",
     ],
     entry_points={
         'console_scripts': [
