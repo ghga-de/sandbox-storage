@@ -41,9 +41,15 @@ class DrsReturnObject:
     self_uri: str
     size: int
     created_time: str
+<<<<<<< HEAD
     checksums: list
 
     def __json__(self, _: Request) -> t.Dict[str, t.Any]:
+=======
+    checksums: dict
+
+    def __json__(self, request: Request) -> t.Dict[str, str]:
+>>>>>>> Sending a dummy GA4GH Request
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -60,7 +66,11 @@ class AccessURL:
 
     url: str
 
+<<<<<<< HEAD
     def __json__(self, _: Request) -> t.Dict[str, str]:
+=======
+    def __json__(self, request: Request) -> t.Dict[str, str]:
+>>>>>>> Sending a dummy GA4GH Request
         """JSON-renderer for this object."""
         return {"url": self.url}
 
@@ -93,7 +103,11 @@ def get_app():
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
+<<<<<<< HEAD
 def index(_, __):
+=======
+def index(context, request):
+>>>>>>> Sending a dummy GA4GH Request
     """Index Enpoint, returns 'Hello World'"""
     return {"content": "Hello World!"}
 
@@ -105,6 +119,7 @@ def get_objects_id(request: Request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
 
+<<<<<<< HEAD
     db = get_session()
     target_object = (
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
@@ -126,6 +141,19 @@ def get_objects_id(request: Request):
 
     raise HTTPNotFound(
         json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
+=======
+    return DrsObject(
+        id="1",
+        self_uri="drs://drs.example.org/314159",
+        size=1,
+        created_time="2002-10-02T15:00:00Z",
+        checksums=[
+            {
+                "checksum": "62361711c02eaa44409b79ebee049268",
+                "type": "md5",
+            }
+        ],
+>>>>>>> Sending a dummy GA4GH Request
     )
 
 
@@ -141,6 +169,7 @@ def get_objects_id_access_id(request):
     object_id = request.matchdict["object_id"]
     access_id = request.matchdict["access_id"]
 
+<<<<<<< HEAD
     db = get_session()
     target_object = (
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
@@ -162,5 +191,12 @@ def get_objects_id_access_id(request):
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
 def get_health(_, __):
+=======
+    return AccessURL(url="https://drs.access.dummy")
+
+
+@view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
+def get_health(context, request):
+>>>>>>> Sending a dummy GA4GH Request
     """Health check"""
     return {"status": "OK"}
