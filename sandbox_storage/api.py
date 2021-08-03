@@ -15,8 +15,44 @@
 
 """ Provides the API endpoints """
 
+import typing as t
 from pyramid.view import view_config
 from pyramid.config import Configurator
+from pyramid.request import Request
+
+from dataclasses import dataclass
+
+
+@dataclass
+class DrsObject:
+    """A DrsObject"""
+
+    id: str
+    self_uri: str
+    size: int
+    created_time: str
+    checksums: dict
+
+    def __json__(self, request: Request) -> t.Dict[str, str]:
+        """JSON-renderer for this object."""
+        return {
+            "id": self.id,
+            "self_uri": self.self_uri,
+            "size": self.size,
+            "created_time": self.created_time,
+            "checksums": self.checksums,
+        }
+
+
+@dataclass
+class AccessURL:
+    """An AccessURL"""
+
+    url: str
+
+    def __json__(self, request: Request) -> t.Dict[str, str]:
+        """JSON-renderer for this object."""
+        return {"url": self.url}
 
 
 def get_app():
@@ -43,7 +79,7 @@ def get_app():
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
-def index():
+def index(context, request):
     """Index Enpoint, returns 'Hello World'"""
     return {"content": "Hello World!"}
 
@@ -54,7 +90,19 @@ def index():
 def get_objects_id(request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
-    return {"object_id": object_id}
+
+    return DrsObject(
+        id="1",
+        self_uri="drs://drs.example.org/314159",
+        size=1,
+        created_time="2002-10-02T15:00:00Z",
+        checksums=[
+            {
+                "checksum": "62361711c02eaa44409b79ebee049268",
+                "type": "md5",
+            }
+        ],
+    )
 
 
 @view_config(
@@ -67,10 +115,11 @@ def get_objects_id_access_id(request):
     """Get a URL for fetching bytes."""
     object_id = request.matchdict["object_id"]
     access_id = request.matchdict["access_id"]
-    return {"object_id": object_id, "access_id": access_id}
+
+    return AccessURL(url="https://drs.access.dummy")
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
-def get_health():
+def get_health(context, request):
     """Health check"""
     return {"status": "OK"}
