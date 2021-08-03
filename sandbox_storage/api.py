@@ -20,48 +20,57 @@ from pyramid.config import Configurator
 
 
 def get_app():
-    """ Builds the App """
-    base_url = '/ga4gh/drs/v1'
+    """Builds the App"""
+    base_url = "/ga4gh/drs/v1"
 
     with Configurator() as config:
         config.include("pyramid_openapi3")
-        config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml',
-                                     route='/ghga/drs/v1/openapi.yaml')
+        config.pyramid_openapi3_spec(
+            "sandbox_storage/openapi.yaml", route="/ghga/drs/v1/openapi.yaml"
+        )
         config.pyramid_openapi3_add_explorer(base_url)
 
-        config.add_route('hello', '/')
-        config.add_route('health', '/health')
+        config.add_route("hello", "/")
+        config.add_route("health", "/health")
 
-        config.add_route('objects_id', base_url + '/objects/{object_id}')
-        config.add_route('objects_id_access_id',
-                         base_url + '/objects/{object_id}/access/{access_id}')
+        config.add_route("objects_id", base_url + "/objects/{object_id}")
+        config.add_route(
+            "objects_id_access_id", base_url + "/objects/{object_id}/access/{access_id}"
+        )
         config.scan(".")
 
     return config.make_wsgi_app()
 
 
-@view_config(route_name="hello", renderer='json', openapi=False, request_method="GET")
+@view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
 def index():
-    """ Index Enpoint, returns 'Hello World'"""
-    return {'content': 'Hello World!'}
+    """Index Enpoint, returns 'Hello World'"""
+    return {"content": "Hello World!"}
 
 
-@view_config(route_name="objects_id", renderer='json', openapi=True, request_method="GET")
+@view_config(
+    route_name="objects_id", renderer="json", openapi=True, request_method="GET"
+)
 def get_objects_id(request):
-    """ Get info about a `DrsObject`."""
-    object_id = request.matchdict['object_id']
-    return {'object_id': object_id}
+    """Get info about a `DrsObject`."""
+    object_id = request.matchdict["object_id"]
+    return {"object_id": object_id}
 
 
-@view_config(route_name="objects_id_access_id", renderer='json', openapi=True, request_method="GET")
+@view_config(
+    route_name="objects_id_access_id",
+    renderer="json",
+    openapi=True,
+    request_method="GET",
+)
 def get_objects_id_access_id(request):
-    """ Get a URL for fetching bytes."""
-    object_id = request.matchdict['object_id']
-    access_id = request.matchdict['access_id']
-    return {'object_id': object_id, 'access_id': access_id}
+    """Get a URL for fetching bytes."""
+    object_id = request.matchdict["object_id"]
+    access_id = request.matchdict["access_id"]
+    return {"object_id": object_id, "access_id": access_id}
 
 
-@view_config(route_name="health", renderer='json', openapi=False, request_method="GET")
+@view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
 def get_health():
     """Health check"""
     return {"status": "OK"}
