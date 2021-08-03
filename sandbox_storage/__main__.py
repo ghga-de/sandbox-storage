@@ -14,9 +14,7 @@
 
 from os import strerror
 from wsgiref.simple_server import make_server
-from pyramid.config import Configurator
 import pyramid_openapi3
-import typer
 from typing import Optional
 from .config import get_settings
 
@@ -27,38 +25,16 @@ from .api import (
         get_health,
         get_objects_id,
         get_objects_id_access_id,
+        get_app,
     )
-
-base_url = '/ghga/drs/v1'
-
-def run(
-    config: Optional[str] = typer.Option(
-        None,
-        help = "Path to config yaml."
-    )
-):
+    
+def run():
     """Starts backend server
     """
-    with Configurator() as config:
 
-        config.include("pyramid_openapi3")
-        config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml', route='/ghga/drs/v1/openapi.yaml')
-        config.pyramid_openapi3_add_explorer(base_url)
-
-        config.add_route('hello', '/')
-        config.add_route('health', '/health')
-
-        config.add_route('objects_id', base_url + '/objects/{object_id}')
-        config.add_route('objects_id_access_id', base_url + '/objects/{object_id}/access/{access_id}')
-        config.scan(".")
-
-        app = config.make_wsgi_app()
-    server = make_server(settings.host, settings.port, app)
+    server = make_server(settings.host, settings.port, get_app())
     server.serve_forever()
 
-def run_cli():
-    typer.run(run)
-
 if __name__ == "__main__":
-    run_cli()
+    run()
     

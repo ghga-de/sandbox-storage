@@ -65,7 +65,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'sandbox-storage=sandbox_storage.__main__:run_cli',
+            'sandbox-storage=sandbox_storage.__main__:run',
         ],
     },
 )
