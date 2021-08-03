@@ -21,20 +21,22 @@ def get_app():
 
     with Configurator() as config:
         config.include("pyramid_openapi3")
-        config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml', route='/ghga/drs/v1/openapi.yaml')
+        config.pyramid_openapi3_spec('sandbox_storage/openapi.yaml',\
+             route='/ghga/drs/v1/openapi.yaml')
         config.pyramid_openapi3_add_explorer(base_url)
 
         config.add_route('hello', '/')
         config.add_route('health', '/health')
 
         config.add_route('objects_id', base_url + '/objects/{object_id}')
-        config.add_route('objects_id_access_id', base_url + '/objects/{object_id}/access/{access_id}')
+        config.add_route('objects_id_access_id', base_url\
+             + '/objects/{object_id}/access/{access_id}')
         config.scan(".")
 
     return config.make_wsgi_app()
 
 @view_config(route_name="hello", renderer='json', openapi=False, request_method="GET")
-def index(request):
+def index():
     return {'content': 'Hello World!'}
 
 @view_config(route_name="objects_id", renderer='json', openapi=True, request_method="GET")
@@ -49,7 +51,6 @@ def get_objects_id_access_id(request):
     return {'object_id': object_id, 'access_id': access_id}
 
 @view_config(route_name="health", renderer='json', openapi=False, request_method="GET")
-def get_health(request):
+def get_health():
     """Health check"""
     return {"status": "OK"}
-
