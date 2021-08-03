@@ -13,29 +13,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""API Endpoints
-"""
+""" Provides the API endpoints """
 
-from fastapi import FastAPI
-
-app = FastAPI()
+from pyramid.view import view_config
+from pyramid.config import Configurator
 
 
-@app.get("/health")
+def get_app():
+    """Builds the App"""
+    base_url = "/ga4gh/drs/v1"
+
+    with Configurator() as config:
+        config.include("pyramid_openapi3")
+        config.pyramid_openapi3_spec(
+            "sandbox_storage/openapi.yaml", route="/ghga/drs/v1/openapi.yaml"
+        )
+        config.pyramid_openapi3_add_explorer(base_url)
+
+        config.add_route("hello", "/")
+        config.add_route("health", "/health")
+
+        config.add_route("objects_id", base_url + "/objects/{object_id}")
+        config.add_route(
+            "objects_id_access_id", base_url + "/objects/{object_id}/access/{access_id}"
+        )
+        config.scan(".")
+
+    return config.make_wsgi_app()
+
+
+@view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
 def index():
+    """Index Enpoint, returns 'Hello World'"""
+    return {"content": "Hello World!"}
+
+
+@view_config(
+    route_name="objects_id", renderer="json", openapi=True, request_method="GET"
+)
+def get_objects_id(request):
+    """Get info about a `DrsObject`."""
+    object_id = request.matchdict["object_id"]
+    return {"object_id": object_id}
+
+
+@view_config(
+    route_name="objects_id_access_id",
+    renderer="json",
+    openapi=True,
+    request_method="GET",
+)
+def get_objects_id_access_id(request):
+    """Get a URL for fetching bytes."""
+    object_id = request.matchdict["object_id"]
+    access_id = request.matchdict["access_id"]
+    return {"object_id": object_id, "access_id": access_id}
+
+
+@view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
+def get_health():
     """Health check"""
     return {"status": "OK"}
-
-
-@app.get("/objects/{DRS_ID}")
-def get_objects_id(DRS_ID: str):  # pylint: disable=invalid-name
-    """Get a specific DRS objects"""
-    return {"DRS_ID": DRS_ID}
-
-
-@app.get("/objects/{DRS_ID}/access/{access_id}")
-def get_objects_id_access_id(
-    DRS_ID: str, access_id: str
-):  # pylint: disable=invalid-name
-    """Get details on a specific access method for a DRS object"""
-    return {"DRS_ID": DRS_ID, "access_id": access_id}
