@@ -4,16 +4,15 @@
 
 from wsgiref.simple_server import make_server
 from .config import get_settings
-
-settings = get_settings()
-
 from .api import get_app
 
+app = get_app()
+settings = get_settings()
 
 def run():
     """Starts backend server"""
 
-    server = make_server(settings.host, settings.port, get_app())
+    server = make_server(settings.host, settings.port, app)
     server.serve_forever()
 
 if __name__ == "__main__":
