@@ -21,15 +21,6 @@ from sqlalchemy.dialects.postgresql import JSON
 from .database import Base
 
 
-class Visa(Base):
-    """GA4GH Passport Visa Type Object"""
-
-    __tablename__ = "visas"
-    id = Column(Integer, primary_key=True)
-    elixir_id = Column(String, nullable=False)
-    passport = Column(JSON, nullable=False)
-
-
 class DrsObject(Base):
     """GA4GH DRS Object that links to an S3 object"""
 
