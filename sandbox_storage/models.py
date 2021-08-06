@@ -16,7 +16,8 @@
 """Database Models
 """
 
-from sqlalchemy import Column, Integer, String
+from typing import Sized
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.dialects.postgresql import JSON
 from .database import Base
 
@@ -28,3 +29,6 @@ class DrsObject(Base):
     id = Column(Integer, primary_key=True)
     drs_id = Column(String, nullable=False)
     path = Column(String, nullable=False)
+    size = Column(Integer)
+    created_time = Column(DateTime, nullable=False)
+    checksum_md5 = Column(String, nullable=False)
