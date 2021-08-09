@@ -233,11 +233,16 @@ good-names=i,
            ex,
            Run,
 <<<<<<< HEAD
+<<<<<<< HEAD
            id,
            db,
 =======
            id
 >>>>>>> Pylint Errors
+=======
+           id,
+           db,
+>>>>>>> More Pylint Errors
            _
 
 # Good variable names regexes, separated by a comma. If names match any regex,
