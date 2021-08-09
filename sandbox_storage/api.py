@@ -37,9 +37,9 @@ class DrsReturnObject:
     self_uri: str
     size: int
     created_time: str
-    checksums: dict
+    checksums: list
 
-    def __json__(self, request: Request) -> t.Dict[str, str]:
+    def __json__(self, request: Request) -> t.Dict[str, t.Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
