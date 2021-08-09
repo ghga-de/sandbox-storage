@@ -20,7 +20,7 @@ import typing as t
 
 from pyramid.events import NewRequest
 from pyramid.view import view_config
-from pyramid.config import Configurator
+from pyramid.config import Configurator, settings
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
@@ -105,6 +105,7 @@ def get_objects_id(request: Request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
 
+<<<<<<< HEAD
     db = get_session()
     target_object = (
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
@@ -126,6 +127,22 @@ def get_objects_id(request: Request):
 
     raise HTTPNotFound(
         json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
+=======
+    db = request.dbsession
+    target_object = resource_by_id(db, User, object_id)
+
+    return DrsObject(
+        id=object_id,
+        self_uri=config_settings.drs_path + object_id,
+        size=1,
+        created_time="2002-10-02T15:00:00Z",
+        checksums=[
+            {
+                "checksum": "62361711c02eaa44409b79ebee049268",
+                "type": "md5",
+            }
+        ],
+>>>>>>> WIP
     )
 
 
@@ -135,7 +152,7 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request):
+def get_objects_id_access_id(request: Request):
     """Get a URL for fetching bytes."""
 
     object_id = request.matchdict["object_id"]
