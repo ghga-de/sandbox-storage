@@ -39,7 +39,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self, request: Request) -> t.Dict[str, t.Any]:
+    def __json__(self) -> t.Dict[str, t.Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -85,7 +85,7 @@ def get_app():
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
-def index(context, request):
+def index():
     """Index Enpoint, returns 'Hello World'"""
     return {"content": "Hello World!"}
 
@@ -127,7 +127,7 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request: Request):
+def get_objects_id_access_id():
     """Get a URL for fetching bytes."""
     # Needed for next PR
     # object_id = request.matchdict["object_id"]
@@ -137,6 +137,6 @@ def get_objects_id_access_id(request: Request):
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
-def get_health(context, request):
+def get_health():
     """Health check"""
     return {"status": "OK"}
