@@ -32,6 +32,7 @@ requires = [
     "pyramid_beaker==0.8",
     "pyramid_openapi3==0.11",
     "openapi-core==0.13.8",
+    "zope.sqlalchemy==1.5",
 ]
 
 testing_require = [
