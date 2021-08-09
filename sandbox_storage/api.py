@@ -18,7 +18,7 @@
 from dataclasses import dataclass
 import typing as t
 from pyramid.view import view_config
-from pyramid.config import Configurator
+from pyramid.config import Configurator, settings
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPNotFound
 
@@ -127,7 +127,7 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id():
+def get_objects_id_access_id(request: Request):
     """Get a URL for fetching bytes."""
     # Needed for next PR
     # object_id = request.matchdict["object_id"]
