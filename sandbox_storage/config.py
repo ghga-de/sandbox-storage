@@ -62,6 +62,7 @@ class Settings(BaseSettings):
     host: str = "127.0.0.1"
     port: int = 8080
     log_level: LogLevel = "info"
+    drs_path: str = "drs://localhost:8080/"
 
 
 def get_settings(

@@ -17,10 +17,13 @@
 
 import typing as t
 from pyramid.view import view_config
-from pyramid.config import Configurator
+from pyramid.config import Configurator, settings
 from pyramid.request import Request
 
 from dataclasses import dataclass
+from .config import get_settings
+
+config_settings = get_settings
 
 
 @dataclass
@@ -87,13 +90,16 @@ def index(context, request):
 @view_config(
     route_name="objects_id", renderer="json", openapi=True, request_method="GET"
 )
-def get_objects_id(request):
+def get_objects_id(request: Request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
 
+    db = request.dbsession
+    target_object = resource_by_id(db, User, object_id)
+
     return DrsObject(
-        id="1",
-        self_uri="drs://drs.example.org/314159",
+        id=object_id,
+        self_uri=config_settings.drs_path + object_id,
         size=1,
         created_time="2002-10-02T15:00:00Z",
         checksums=[
@@ -111,7 +117,7 @@ def get_objects_id(request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request):
+def get_objects_id_access_id(request: Request):
     """Get a URL for fetching bytes."""
     object_id = request.matchdict["object_id"]
     access_id = request.matchdict["access_id"]
