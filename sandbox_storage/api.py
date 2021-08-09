@@ -15,13 +15,13 @@
 
 """ Provides the API endpoints """
 
+from dataclasses import dataclass
 import typing as t
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPNotFound
 
-from dataclasses import dataclass
 from .config import get_settings
 from .database import get_session
 from .models import DrsObject
