@@ -16,9 +16,7 @@
 """Database Models
 """
 
-from typing import Sized
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.dialects.postgresql import JSON
 from .database import Base
 
 

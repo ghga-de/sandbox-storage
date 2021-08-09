@@ -18,7 +18,7 @@
 from dataclasses import dataclass
 import typing as t
 from pyramid.view import view_config
-from pyramid.config import Configurator, settings
+from pyramid.config import Configurator
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPNotFound
 
@@ -48,6 +48,18 @@ class DrsReturnObject:
             "created_time": self.created_time,
             "checksums": self.checksums,
         }
+
+
+# @dataclass
+# class ErrorMsgReturnObject:
+#     """An Object to return Error Messages"""
+
+#     msg: str
+#     status_code: int
+
+#     def __json__(self, request: Request) -> t.Dict[str, str]:
+#         """JSON-renderer for this object."""
+#         return {"msg": self.msg, "status_code": self.status_code}
 
 
 @dataclass
