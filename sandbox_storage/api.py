@@ -50,18 +50,6 @@ class DrsReturnObject:
         }
 
 
-# @dataclass
-# class ErrorMsgReturnObject:
-#     """An Object to return Error Messages"""
-
-#     msg: str
-#     status_code: int
-
-#     def __json__(self, request: Request) -> t.Dict[str, str]:
-#         """JSON-renderer for this object."""
-#         return {"msg": self.msg, "status_code": self.status_code}
-
-
 @dataclass
 class AccessURL:
     """An AccessURL"""
@@ -110,14 +98,16 @@ def get_objects_id(request: Request):
     object_id = request.matchdict["object_id"]
 
     db = get_session()
-    target_object = db.query(DrsObject).filter(DrsObject.id == object_id).one_or_none()
+    target_object = (
+        db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
+    )
 
     if target_object != None:
         return DrsReturnObject(
-            id=target_object.id,
-            self_uri=config_settings.drs_path + target_object.id,
+            id=target_object.drs_id,
+            self_uri=config_settings.drs_path + target_object.drs_id,
             size=target_object.size,
-            created_time=target_object.created_time,
+            created_time=target_object.created_time.isoformat() + "Z",
             checksums=[
                 {
                     "checksum": target_object.checksum_md5,
@@ -127,7 +117,7 @@ def get_objects_id(request: Request):
         )
     else:
         raise HTTPNotFound(
-            json={"msg": "The requested access URL wasn't found", "status_code": 404}
+            json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
         )
 
 
