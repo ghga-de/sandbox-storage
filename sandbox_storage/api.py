@@ -50,18 +50,6 @@ class DrsReturnObject:
         }
 
 
-# @dataclass
-# class ErrorMsgReturnObject:
-#     """An Object to return Error Messages"""
-
-#     msg: str
-#     status_code: int
-
-#     def __json__(self, request: Request) -> t.Dict[str, str]:
-#         """JSON-renderer for this object."""
-#         return {"msg": self.msg, "status_code": self.status_code}
-
-
 @dataclass
 class AccessURL:
     """An AccessURL"""
