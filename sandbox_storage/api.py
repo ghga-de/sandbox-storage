@@ -135,7 +135,7 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request: Request):
+def get_objects_id_access_id(request):
     """Get a URL for fetching bytes."""
 
     object_id = request.matchdict["object_id"]
