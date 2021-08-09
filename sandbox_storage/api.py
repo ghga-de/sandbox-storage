@@ -39,7 +39,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self) -> t.Dict[str, t.Any]:
+    def __json__(self, request: Request) -> t.Dict[str, t.Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
