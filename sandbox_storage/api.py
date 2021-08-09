@@ -39,7 +39,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self, request: Request) -> t.Dict[str, t.Any]:
+    def __json__(self) -> t.Dict[str, t.Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -56,7 +56,7 @@ class AccessURL:
 
     url: str
 
-    def __json__(self, request: Request) -> t.Dict[str, str]:
+    def __json__(self) -> t.Dict[str, str]:
         """JSON-renderer for this object."""
         return {"url": self.url}
 
@@ -85,7 +85,7 @@ def get_app():
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
-def index(context, request):
+def index():
     """Index Enpoint, returns 'Hello World'"""
     return {"content": "Hello World!"}
 
@@ -102,7 +102,7 @@ def get_objects_id(request: Request):
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
     )
 
-    if target_object != None:
+    if target_object is not None:
         return DrsReturnObject(
             id=target_object.drs_id,
             self_uri=config_settings.drs_path + target_object.drs_id,
@@ -115,10 +115,10 @@ def get_objects_id(request: Request):
                 }
             ],
         )
-    else:
-        raise HTTPNotFound(
-            json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
-        )
+
+    raise HTTPNotFound(
+        json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
+    )
 
 
 @view_config(
@@ -127,15 +127,16 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request: Request):
+def get_objects_id_access_id():
     """Get a URL for fetching bytes."""
-    object_id = request.matchdict["object_id"]
-    access_id = request.matchdict["access_id"]
+    # Needed for next PR
+    # object_id = request.matchdict["object_id"]
+    # access_id = request.matchdict["access_id"]
 
     return AccessURL(url="https://drs.access.dummy")
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
-def get_health(context, request):
+def get_health():
     """Health check"""
     return {"status": "OK"}
