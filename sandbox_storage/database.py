@@ -32,5 +32,8 @@ Base = declarative_base()
 
 
 def get_session():
+<<<<<<< HEAD
     """Retruns the database session"""
+=======
+>>>>>>> get_objects works
     return DBSession()
