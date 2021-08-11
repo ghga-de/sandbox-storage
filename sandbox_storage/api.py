@@ -30,7 +30,7 @@ from .database import get_session
 from .models import DrsObject
 from .pubsub import send_message
 
-config = get_config()
+CONFIG_SETTINGS = get_config()
 
 
 @dataclass
@@ -43,7 +43,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self, _: Request) -> t.Dict[str, t.Any]:
+    def __json__(self, _: Request) -> Dict[str, Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -60,19 +60,19 @@ class AccessURL:
 
     url: str
 
-    def __json__(self, _: Request) -> t.Dict[str, str]:
+    def __json__(self, _: Request) -> Dict[str, str]:
         """JSON-renderer for this object."""
         return {"url": self.url}
 
 
-def get_app():
+def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
     """Builds the App"""
-    api_path = config.api_path
+    api_path = config_settings.api_path
 
     with Configurator() as pyramid_config:
 
         pyramid_config.add_subscriber(
-            cors_header_response_callback_factory(config), NewRequest
+            cors_header_response_callback_factory(config_settings), NewRequest
         )
         pyramid_config.include("pyramid_openapi3")
         pyramid_config.pyramid_openapi3_spec(
@@ -113,7 +113,7 @@ def get_objects_id(request: Request):
     if target_object is not None:
         return DrsReturnObject(
             id=target_object.drs_id,
-            self_uri=config.drs_path + target_object.drs_id,
+            self_uri=CONFIG_SETTINGS.drs_path + target_object.drs_id,
             size=target_object.size,
             created_time=target_object.created_time.isoformat() + "Z",
             checksums=[

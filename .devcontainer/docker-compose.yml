@@ -16,6 +16,7 @@ services:
 
     environment:
       DB_URL: postgresql://admin:admin@postgresql/storage
+      DB_TEST_URL: postgresql://admin:admin@postgresql/test
       S3_URL: http://s3_localstack:4566 # to be adapted
 
     volumes:

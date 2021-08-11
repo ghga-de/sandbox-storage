@@ -48,6 +48,9 @@ testing_require = [
     "flake8",
     "black",
     "bandit",
+    "webtest",
+    "sqlalchemy_utils",
+    "transaction",
 ]
 
 setup(
