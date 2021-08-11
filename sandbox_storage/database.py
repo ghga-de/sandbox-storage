@@ -24,7 +24,13 @@ from zope.sqlalchemy import register
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 SQLALCHEMY_DATABASE_URL = "postgresql://admin:admin@postgresql/storage"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+def get_engine(db_url: str):
+    """get sqlalchemy engine"""
+    return create_engine(db_url)
+
+
+engine = get_engine(SQLALCHEMY_DATABASE_URL)
 DBSession = scoped_session(sessionmaker(bind=engine))
 register(DBSession)
 

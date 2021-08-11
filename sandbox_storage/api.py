@@ -16,17 +16,17 @@
 """ Provides the API endpoints """
 
 from dataclasses import dataclass
-import typing as t
+from typing import Type, Dict, Any
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPNotFound
 
-from .config import get_settings
+from .config import get_settings, Settings
 from .database import get_session
 from .models import DrsObject
 
-config_settings = get_settings()
+CONFIG_SETTINGS = get_settings()
 
 
 @dataclass
@@ -39,7 +39,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self) -> t.Dict[str, t.Any]:
+    def __json__(self) -> Dict[str, Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -56,12 +56,12 @@ class AccessURL:
 
     url: str
 
-    def __json__(self) -> t.Dict[str, str]:
+    def __json__(self) -> Dict[str, str]:
         """JSON-renderer for this object."""
         return {"url": self.url}
 
 
-def get_app():
+def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
     """Builds the App"""
     api_path = config_settings.api_path
 
@@ -85,7 +85,7 @@ def get_app():
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
-def index():
+def index(_, __):
     """Index Enpoint, returns 'Hello World'"""
     return {"content": "Hello World!"}
 
@@ -96,6 +96,7 @@ def index():
 def get_objects_id(request: Request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
+    config_settings = get_settings()
 
     db = get_session()
     target_object = (
@@ -137,6 +138,6 @@ def get_objects_id_access_id():
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
-def get_health():
+def get_health(_, __):
     """Health check"""
     return {"status": "OK"}
