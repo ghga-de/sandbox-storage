@@ -18,14 +18,19 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from zope.sqlalchemy import register
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 SQLALCHEMY_DATABASE_URL = "postgresql://admin:admin@postgresql/storage"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+DBSession = scoped_session(sessionmaker(bind=engine))
+register(DBSession)
 
 Base = declarative_base()
+
+
+def get_session():
+    """Retruns the database session"""
+    return DBSession()

@@ -16,18 +16,8 @@
 """Database Models
 """
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy import Column, Integer, String, DateTime
 from .database import Base
-
-
-class Visa(Base):
-    """GA4GH Passport Visa Type Object"""
-
-    __tablename__ = "visas"
-    id = Column(Integer, primary_key=True)
-    elixir_id = Column(String, nullable=False)
-    passport = Column(JSON, nullable=False)
 
 
 class DrsObject(Base):
@@ -37,3 +27,6 @@ class DrsObject(Base):
     id = Column(Integer, primary_key=True)
     drs_id = Column(String, nullable=False)
     path = Column(String, nullable=False)
+    size = Column(Integer)
+    created_time = Column(DateTime, nullable=False)
+    checksum_md5 = Column(String, nullable=False)
