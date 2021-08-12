@@ -31,6 +31,7 @@ requires = [
     "pyramid_openapi3==0.11",
     "openapi-core==0.13.8",
     "zope.sqlalchemy==1.5",
+    "pydantic==1.8.2",
 ]
 
 testing_require = [
