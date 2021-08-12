@@ -20,7 +20,7 @@ import typing as t
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.request import Request
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 from .config import get_settings
 from .database import get_session
@@ -127,13 +127,28 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id():
+def get_objects_id_access_id(request):
     """Get a URL for fetching bytes."""
-    # Needed for next PR
-    # object_id = request.matchdict["object_id"]
-    # access_id = request.matchdict["access_id"]
 
-    return AccessURL(url="https://drs.access.dummy")
+    object_id = request.matchdict["object_id"]
+    access_id = request.matchdict["access_id"]
+
+    db = get_session()
+    target_object = (
+        db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
+    )
+
+    if target_object is None:
+        raise HTTPBadRequest(
+            json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 400}
+        )
+
+    if access_id == "s3":
+        return AccessURL(url=target_object.path)
+
+    raise HTTPBadRequest(
+        json={"msg": "The requested access method does not exist", "status_code": 400}
+    )
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
