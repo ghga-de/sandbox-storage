@@ -20,21 +20,41 @@ from . import BaseIntegrationTest
 
 
 class TestBase(BaseIntegrationTest):
-    """Test wether API is reachable."""
+    """Test whether Basic API functions are reachable."""
 
     def test_swagger_api_loaded(self):
-        """Swagger's API Explorer should be served on /api/."""
+        """Swagger's API Explorer should be served on the api_path"""
         response = self.testapp.get(self.config.api_path, status=200)
         assert (
             "<title>Swagger UI</title>" in response.text
         ), "Swagger UI could not be loaded"
 
     def test_health(self):
-        """Swagger's API Explorer should be served on /api/."""
+        """The health check should be up, running and served on /health"""
         response = self.testapp.get("/health", status=200)
         assert response.json == {"status": "OK"}
 
     def test_index(self):
-        """Swagger's API Explorer should be served on /api/."""
+        """/ Should serve a generic index site"""
         response = self.testapp.get("/", status=200)
         assert response.json == {"content": "Hello World!"}
+
+
+class TestAPI(BaseIntegrationTest):
+    """Test whether DRS API is reachable."""
+
+    def test_objects_id(self):
+        """Swagger's API Explorer should be served on /."""
+        response = self.testapp.get(f"{self.config.api_path}/objects/1", status=200)
+        assert (
+            "<title>Swagger UI</title>" in response.text
+        ), "Swagger UI could not be loaded"
+
+    def test_objects_id_access_id(self):
+        """Swagger's API Explorer should be served on /api/."""
+        response = self.testapp.get(
+            f"{self.config.api_path}/objects/1/access/s3", status=200
+        )
+        assert (
+            "<title>Swagger UI</title>" in response.text
+        ), "Swagger UI could not be loaded"
