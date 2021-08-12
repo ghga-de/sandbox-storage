@@ -21,8 +21,6 @@ with open(HERE / "README.md") as f:
     README = f.read()
 
 requires = [
-    "fastapi==0.65.2",
-    "uvicorn[standard]==0.13.4",
     "PyYAML==5.4.1",
     "typer==0.3.2",
     "psycopg2==2.9.1",
