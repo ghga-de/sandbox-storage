@@ -21,8 +21,6 @@ with open(HERE / "README.md") as f:
     README = f.read()
 
 requires = [
-    "fastapi==0.65.2",
-    "uvicorn[standard]==0.13.4",
     "PyYAML==5.4.1",
     "typer==0.3.2",
     "psycopg2==2.9.1",
@@ -33,6 +31,7 @@ requires = [
     "pyramid_openapi3==0.11",
     "openapi-core==0.13.8",
     "zope.sqlalchemy==1.5",
+    "pydantic==1.8.2",
 ]
 
 testing_require = [
