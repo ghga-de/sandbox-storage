@@ -17,11 +17,14 @@
 
 from dataclasses import dataclass
 import typing as t
+
+from pyramid.events import NewRequest
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
+from .cors import cors_header_response_callback_factory
 from .config import get_settings
 from .database import get_session
 from .models import DrsObject
@@ -66,6 +69,10 @@ def get_app():
     api_path = config_settings.api_path
 
     with Configurator() as config:
+
+        config.add_subscriber(
+            cors_header_response_callback_factory(config_settings), NewRequest
+        )
         config.include("pyramid_openapi3")
         config.pyramid_openapi3_spec(
             "/workspace/sandbox_storage/openapi.yaml", route=api_path + "openapi.yaml"

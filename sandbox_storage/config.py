@@ -17,7 +17,7 @@
 """
 
 from pathlib import Path
-from typing import Literal, Dict, Any, Optional, Callable
+from typing import Literal, Dict, Any, Optional, Callable, List
 from pydantic import BaseSettings
 import yaml
 
@@ -64,6 +64,11 @@ class Settings(BaseSettings):
     log_level: LogLevel = "info"
     drs_path: str = "drs://localhost:8080/"
     api_path: str = "/ga4gh/drs/v1"
+
+    cors_allowed_origins: List[str] = []
+    cors_allow_credentials: bool = False
+    cors_allowed_methods: List[str] = []
+    cors_allowed_headers: List[str] = []
 
 
 def get_settings(
