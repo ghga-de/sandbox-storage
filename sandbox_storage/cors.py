@@ -26,8 +26,7 @@ def list_to_comma_sep_str(list_of_str: List[str]):
     """Join a list of strings into one comma-seperated string."""
     if len(list_of_str) == 0:
         return ""
-    else:
-        return ",".join(list_of_str)
+    return ",".join(list_of_str)
 
 
 def cors_header_response_callback_factory(config: Type[Config]) -> Callable:
