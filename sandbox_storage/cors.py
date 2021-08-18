@@ -16,7 +16,7 @@
 """Make CORS configurable"""
 
 from typing import Type, List
-from .config import Settings
+from .config import Config
 
 
 def list_to_comma_sep_str(list_of_str: List[str]):
@@ -27,9 +27,9 @@ def list_to_comma_sep_str(list_of_str: List[str]):
         return ",".join(list_of_str)
 
 
-def cors_header_response_callback_factory(settings: Type[Settings]):
+def cors_header_response_callback_factory(config: Type[Config]):
     """A factory for creating CORS header callbacks that are
-    configured based on a settings object"""
+    configured based on a config object"""
 
     def cors_headers_response_callback(event):
         """CORS header callback that can be added to a pyramid config
@@ -43,16 +43,16 @@ def cors_header_response_callback_factory(settings: Type[Settings]):
             response.headers.update(
                 {
                     "Access-Control-Allow-Origin": list_to_comma_sep_str(
-                        settings.cors_allowed_origins
+                        config.cors_allowed_origins
                     ),
                     "Access-Control-Allow-Methods": list_to_comma_sep_str(
-                        settings.cors_allowed_methods
+                        config.cors_allowed_methods
                     ),
                     "Access-Control-Allow-Headers": list_to_comma_sep_str(
-                        settings.cors_allowed_headers
+                        config.cors_allowed_headers
                     ),
                     "Access-Control-Allow-Credentials": "true"
-                    if settings.cors_allow_credentials
+                    if config.cors_allow_credentials
                     else "false",
                 }
             )

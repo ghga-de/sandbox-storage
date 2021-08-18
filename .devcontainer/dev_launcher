@@ -1,2 +1,7 @@
 #!/bin/bash
-sandbox-storage --config /workspace/.devcontainer/dev_config.yaml
+
+# change into the .devcontainer dir so that the config
+# yaml located there is taken into account:
+cd /workspace/.devcontainer
+
+sandbox-storage

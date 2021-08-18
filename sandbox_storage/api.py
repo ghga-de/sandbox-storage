@@ -25,11 +25,11 @@ from pyramid.request import Request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 from .cors import cors_header_response_callback_factory
-from .config import get_settings
+from .config import get_config
 from .database import get_session
 from .models import DrsObject
 
-config_settings = get_settings()
+config = get_config()
 
 
 @dataclass
@@ -66,29 +66,29 @@ class AccessURL:
 
 def get_app():
     """Builds the App"""
-    api_path = config_settings.api_path
+    api_path = config.api_path
 
-    with Configurator() as config:
+    with Configurator() as pyramid_config:
 
-        config.add_subscriber(
-            cors_header_response_callback_factory(config_settings), NewRequest
+        pyramid_config.add_subscriber(
+            cors_header_response_callback_factory(config), NewRequest
         )
-        config.include("pyramid_openapi3")
-        config.pyramid_openapi3_spec(
+        pyramid_config.include("pyramid_openapi3")
+        pyramid_config.pyramid_openapi3_spec(
             "/workspace/sandbox_storage/openapi.yaml", route=api_path + "openapi.yaml"
         )
-        config.pyramid_openapi3_add_explorer(api_path)
+        pyramid_config.pyramid_openapi3_add_explorer(api_path)
 
-        config.add_route("hello", "/")
-        config.add_route("health", "/health")
+        pyramid_config.add_route("hello", "/")
+        pyramid_config.add_route("health", "/health")
 
-        config.add_route("objects_id", api_path + "/objects/{object_id}")
-        config.add_route(
+        pyramid_config.add_route("objects_id", api_path + "/objects/{object_id}")
+        pyramid_config.add_route(
             "objects_id_access_id", api_path + "/objects/{object_id}/access/{access_id}"
         )
-        config.scan(".")
+        pyramid_config.scan(".")
 
-    return config.make_wsgi_app()
+    return pyramid_config.make_wsgi_app()
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
@@ -112,7 +112,7 @@ def get_objects_id(request: Request):
     if target_object is not None:
         return DrsReturnObject(
             id=target_object.drs_id,
-            self_uri=config_settings.drs_path + target_object.drs_id,
+            self_uri=config.drs_path + target_object.drs_id,
             size=target_object.size,
             created_time=target_object.created_time.isoformat() + "Z",
             checksums=[

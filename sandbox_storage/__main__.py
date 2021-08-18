@@ -4,17 +4,17 @@
 """Entrypoint for the Package"""
 
 from wsgiref.simple_server import make_server
-from .config import get_settings
+from .config import get_config
 from .api import get_app
 
 app = get_app()
-settings = get_settings()
+config = get_config()
 
 
 def run():
     """Starts backend server"""
 
-    server = make_server(settings.host, settings.port, app)
+    server = make_server(config.host, config.port, app)
     server.serve_forever()
 
 
