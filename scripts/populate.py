@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 
@@ -21,7 +23,7 @@ from sandbox_storage.models import DrsObject
 
 
 HERE = Path(__file__).parent.resolve()
-DIR_PATH = HERE / "examples"
+DIR_PATH = HERE.parent.resolve() / "examples"
 
 
 def md5(fname):
@@ -76,3 +78,7 @@ def populate_database():
             db.flush()
         except IntegrityError as exception:
             raise exception
+
+
+if __name__ == "__main__":
+    populate_database()
