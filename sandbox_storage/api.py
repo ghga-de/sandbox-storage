@@ -25,6 +25,7 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from .config import get_settings
 from .database import get_session
 from .models import DrsObject
+from .pubsub import send_message
 
 config_settings = get_settings()
 
@@ -144,6 +145,7 @@ def get_objects_id_access_id(request):
         )
 
     if access_id == "s3":
+        send_message(object_id, access_id, "user_id")
         return AccessURL(url=target_object.path)
 
     raise HTTPBadRequest(

@@ -64,6 +64,9 @@ class Settings(BaseSettings):
     log_level: LogLevel = "info"
     drs_path: str = "drs://localhost:8080/"
     api_path: str = "/ga4gh/drs/v1"
+    rabbitmq_host: str = "rabbitmq"
+    rabbitmq_port: int = 5672
+    topic_name: str = "download_request"
 
 
 def get_settings(

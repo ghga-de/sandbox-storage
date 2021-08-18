@@ -32,6 +32,8 @@ requires = [
     "openapi-core==0.13.8",
     "zope.sqlalchemy==1.5",
     "pydantic==1.8.2",
+    "ghga_service_chassis_lib[pubsub]==0.2.0",
+    "pika==1.2.0",
 ]
 
 testing_require = [
