@@ -15,7 +15,10 @@
 
 """Make CORS configurable"""
 
-from typing import Type, List
+from typing import Callable, Type, List
+from pyramid.events import NewRequest
+from pyramid.request import Request
+from pyramid.response import Response
 from .config import Config
 
 
@@ -27,17 +30,17 @@ def list_to_comma_sep_str(list_of_str: List[str]):
         return ",".join(list_of_str)
 
 
-def cors_header_response_callback_factory(config: Type[Config]):
+def cors_header_response_callback_factory(config: Type[Config]) -> Callable:
     """A factory for creating CORS header callbacks that are
     configured based on a config object"""
 
-    def cors_headers_response_callback(event):
+    def cors_headers_response_callback(event: NewRequest):
         """CORS header callback that can be added to a pyramid config
         by:
             `config.add_subscriber(<this_function>, NewRequest)`
         """
 
-        def cors_headers(request, response):
+        def cors_headers(_: Request, response: Response):
             """Modifies Requests."""
 
             response.headers.update(
