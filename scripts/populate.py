@@ -16,6 +16,8 @@ from os import listdir
 from os.path import isfile, join, getsize, getctime
 import hashlib
 from sqlalchemy.exc import IntegrityError
+import transaction
+import zope.sqlalchemy
 
 
 from sandbox_storage.database import get_session
@@ -60,7 +62,6 @@ def populate_database():
         checksum_md5 = md5(file_path)
 
         # Get database
-        db = get_session()
 
         # Get downloadable path
         path = join("https://github.com/ghga-de/raw/dev/", file_path)
@@ -74,8 +75,11 @@ def populate_database():
                 created_time=created_time,
                 checksum_md5=checksum_md5,
             )
-            db.add(drs_object)
-            db.flush()
+            with transaction.manager:
+                db = get_session()
+                zope.sqlalchemy.register(db, transaction.manager)
+                db.add(drs_object)
+                db.flush()
         except IntegrityError as exception:
             raise exception
 
