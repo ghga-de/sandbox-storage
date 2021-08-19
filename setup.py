@@ -32,6 +32,7 @@ requires = [
     "openapi-core==0.13.8",
     "zope.sqlalchemy==1.5",
     "pydantic==1.8.2",
+    "transaction==3.0.1",
 ]
 
 testing_require = [
