@@ -22,7 +22,7 @@ from ..models import DrsObject
 
 
 HERE = Path(__file__).parent.resolve()
-DIR_PATH = HERE.parent.resolve() / "examples"
+DIR_PATH = HERE / "examples"
 
 
 def md5(fname):
@@ -62,7 +62,7 @@ def populate_database():
         db = get_session()
 
         # Get downloadable path
-        path = join("https://github.com/ghga-de/sandbox-storage/raw/dev/", file_path)
+        path = join("https://github.com/ghga-de/raw/dev/", file_path)
 
         try:
             # Create Object in Database
