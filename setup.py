@@ -32,7 +32,7 @@ requires = [
     "openapi-core==0.13.8",
     "zope.sqlalchemy==1.5",
     "pydantic==1.8.2",
-    "ghga-service-chassis-lib==0.3.0",
+    "ghga-service-chassis-lib[pubsub]==0.3.0",
     "pika==1.2.0",
     "transaction==3.0.1",
 ]
