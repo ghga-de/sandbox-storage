@@ -9,6 +9,7 @@ Provides a script function to populate a database
 """
 
 from datetime import datetime
+from pathlib import Path
 from os import listdir
 from os.path import isfile, join, getsize, getctime
 import hashlib
