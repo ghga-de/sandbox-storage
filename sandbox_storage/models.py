@@ -16,7 +16,6 @@
 """Database Models
 """
 
-from enum import unique
 from sqlalchemy import Column, Integer, String, DateTime
 from .database import Base
 
