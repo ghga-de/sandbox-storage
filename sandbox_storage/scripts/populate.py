@@ -4,37 +4,48 @@
 # Can't populate S3 yet
 # So, just take example files and hard links right now
 
+"""
+Provides a script function to populate a database
+"""
+
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join, getsize, getctime
+import hashlib
+from sqlalchemy.exc import IntegrityError
+
 
 from ..database import get_session
 from ..config import get_settings
 from ..models import DrsObject
 
-import hashlib
-from sqlalchemy.exc import IntegrityError
-
 
 settings = get_settings()
-dir_path = settings.example_files_path
+DIR_PATH = settings.example_files_path
 
 
 def md5(fname):
+    """
+    Returns md5 checksum of a file by cutting it in parts of 4096 bytes each
+    """
     hash_md5 = hashlib.md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
+    with open(fname, "rb") as file:
+        for chunk in iter(lambda: file.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
 
 def populate_database():
+    """
+    Populates the database by retrieving the required attributes
+    and then making a commit to the database
+    """
 
-    files = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
+    files = [file for file in listdir(DIR_PATH) if isfile(join(DIR_PATH, file))]
 
     for file in files:
         # Get full path
-        file_path = join(dir_path, file)
+        file_path = join(DIR_PATH, file)
 
         # Get file size
         size = getsize(file_path)
@@ -62,7 +73,5 @@ def populate_database():
             )
             db.add(drs_object)
             db.flush()
-        except IntegrityError as e:
-            raise e
-
-    return
+        except IntegrityError as exception:
+            raise exception
