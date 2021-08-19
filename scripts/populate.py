@@ -16,9 +16,8 @@ import hashlib
 from sqlalchemy.exc import IntegrityError
 
 
-from ..database import get_session
-from ..config import get_settings
-from ..models import DrsObject
+from sandbox_storage.database import get_session
+from sandbox_storage.models import DrsObject
 
 
 HERE = Path(__file__).parent.resolve()
