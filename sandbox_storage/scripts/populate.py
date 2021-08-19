@@ -27,8 +27,9 @@ DIR_PATH = settings.example_files_path
 def md5(fname):
     """
     Returns md5 checksum of a file by cutting it in parts of 4096 bytes each
+    The Hash is not used in a secure context, but to provide a checksum
     """
-    hash_md5 = hashlib.md5()
+    hash_md5 = hashlib.md5()  # nosec
     with open(fname, "rb") as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_md5.update(chunk)
