@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 
@@ -14,6 +16,8 @@ from os import listdir
 from os.path import isfile, join, getsize, getctime
 import hashlib
 from sqlalchemy.exc import IntegrityError
+import transaction
+import zope.sqlalchemy
 
 
 from sandbox_storage.database import get_session
@@ -21,7 +25,7 @@ from sandbox_storage.models import DrsObject
 
 
 HERE = Path(__file__).parent.resolve()
-DIR_PATH = HERE / "examples"
+DIR_PATH = HERE.parent.resolve() / "examples"
 
 
 def md5(fname):
@@ -58,7 +62,6 @@ def populate_database():
         checksum_md5 = md5(file_path)
 
         # Get database
-        db = get_session()
 
         # Get downloadable path
         path = join("https://github.com/ghga-de/raw/dev/", file_path)
@@ -72,7 +75,14 @@ def populate_database():
                 created_time=created_time,
                 checksum_md5=checksum_md5,
             )
-            db.add(drs_object)
-            db.flush()
+            with transaction.manager:
+                db = get_session()
+                zope.sqlalchemy.register(db, transaction.manager)
+                db.add(drs_object)
+                db.flush()
         except IntegrityError as exception:
             raise exception
+
+
+if __name__ == "__main__":
+    populate_database()
