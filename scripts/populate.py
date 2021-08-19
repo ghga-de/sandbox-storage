@@ -61,10 +61,8 @@ def populate_database():
         # Get md5 checksum
         checksum_md5 = md5(file_path)
 
-        # Get database
-
         # Get downloadable path
-        path = join("https://github.com/ghga-de/raw/dev/", file_path)
+        path = join("https://github.com/ghga-de/raw/dev/examples", file)
 
         try:
             # Create Object in Database
