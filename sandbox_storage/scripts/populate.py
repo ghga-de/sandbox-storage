@@ -20,8 +20,8 @@ from ..config import get_settings
 from ..models import DrsObject
 
 
-settings = get_settings()
-DIR_PATH = settings.example_files_path
+HERE = Path(__file__).parent.resolve()
+DIR_PATH = HERE.parent.resolve() / "examples"
 
 
 def md5(fname):
