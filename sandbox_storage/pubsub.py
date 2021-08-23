@@ -17,12 +17,12 @@
 
 import pika
 from ghga_service_chassis_lib.pubsub import AmqpTopic
-from .config import get_settings
+from .config import get_config
 
 
 def get_connection_params():
     """Return a configuration object for pika"""
-    config = get_settings()
+    config = get_config()
 
     return pika.ConnectionParameters(
         host=config.rabbitmq_host, port=config.rabbitmq_port
