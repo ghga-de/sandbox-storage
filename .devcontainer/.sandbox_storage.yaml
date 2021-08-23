@@ -3,7 +3,7 @@ port: 8080
 log_level: info
 drs_path: drs://localhost:8080/
 api_path: /ga4gh/drs/v1
-cors_allowed_origins: ["http://the-other-domain-to-accept.xy"]
+cors_allowed_origins: ["*"]
 cors_allow_credentials: true
 cors_allowed_methods: ["*"]
 cors_allowed_headers: ["*"]
