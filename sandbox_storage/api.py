@@ -28,6 +28,7 @@ from .cors import cors_header_response_callback_factory
 from .config import get_config
 from .database import get_session
 from .models import DrsObject
+from .pubsub import send_message
 
 config = get_config()
 
@@ -151,6 +152,7 @@ def get_objects_id_access_id(request):
         )
 
     if access_id == "s3":
+        send_message(object_id, access_id, "user_id")
         return AccessURL(url=target_object.path)
 
     raise HTTPBadRequest(
