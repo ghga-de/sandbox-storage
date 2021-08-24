@@ -20,10 +20,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import register
-from .config import get_settings
+from .config import get_config
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = get_settings().db_path
+SQLALCHEMY_DATABASE_URL = get_config().db_path
 
 
 def get_engine(db_url: str):

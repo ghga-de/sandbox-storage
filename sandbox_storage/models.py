@@ -25,8 +25,8 @@ class DrsObject(Base):
 
     __tablename__ = "drs_objects"
     id = Column(Integer, primary_key=True)
-    drs_id = Column(String, nullable=False)
+    drs_id = Column(String, nullable=False, unique=True)
     path = Column(String, nullable=False)
-    size = Column(Integer)
+    size = Column(Integer, nullable=False)
     created_time = Column(DateTime, nullable=False)
     checksum_md5 = Column(String, nullable=False)

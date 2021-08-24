@@ -25,9 +25,11 @@ from webtest import TestApp
 import transaction
 from sqlalchemy_utils import create_database, drop_database, database_exists
 
-from sandbox_storage.config import get_settings
+from sandbox_storage.config import get_config
 from sandbox_storage.database import Base, get_engine, get_session
 from sandbox_storage.api import get_app
+
+from ..scripts.populate import populate_database, remove_test_files
 
 from .fixtures import db_url
 
@@ -50,10 +52,16 @@ class BaseIntegrationTest(unittest.TestCase):
 
     def setUp(self):
         """Setup Test Server"""
-        self.config = get_settings()
+        self.config = get_config()
 
         # initialize DB and provide metadata and file fixtures
         self.initDb()
+
+        # Remove any residual test files
+        remove_test_files()
+
+        # Add test files
+        populate_database()
 
         app = get_app(config_settings=self.config)
         self.testapp = TestApp(app)
@@ -61,5 +69,6 @@ class BaseIntegrationTest(unittest.TestCase):
     def tearDown(self):
         """Teardown Test Server"""
         transaction.abort()
+        remove_test_files()
         drop_database(db_url)
         del self.testapp

@@ -16,17 +16,22 @@
 """ Provides the API endpoints """
 
 from dataclasses import dataclass
-from typing import Type, Dict, Any
+from typing import Dict, Any, Type
+from pyramid.config.settings import Settings
+
+from pyramid.events import NewRequest
 from pyramid.view import view_config
 from pyramid.config import Configurator
 from pyramid.request import Request
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
-from .config import get_settings, Settings
+from .cors import cors_header_response_callback_factory
+from .config import get_config
 from .database import get_session
 from .models import DrsObject
+from .pubsub import send_message
 
-CONFIG_SETTINGS = get_settings()
+CONFIG_SETTINGS = get_config()
 
 
 @dataclass
@@ -39,7 +44,7 @@ class DrsReturnObject:
     created_time: str
     checksums: list
 
-    def __json__(self) -> Dict[str, Any]:
+    def __json__(self, _: Request) -> Dict[str, Any]:
         """JSON-renderer for this object."""
         return {
             "id": self.id,
@@ -56,7 +61,7 @@ class AccessURL:
 
     url: str
 
-    def __json__(self) -> Dict[str, str]:
+    def __json__(self, _: Request) -> Dict[str, str]:
         """JSON-renderer for this object."""
         return {"url": self.url}
 
@@ -65,23 +70,27 @@ def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
     """Builds the App"""
     api_path = config_settings.api_path
 
-    with Configurator() as config:
-        config.include("pyramid_openapi3")
-        config.pyramid_openapi3_spec(
+    with Configurator() as pyramid_config:
+
+        pyramid_config.add_subscriber(
+            cors_header_response_callback_factory(config_settings), NewRequest
+        )
+        pyramid_config.include("pyramid_openapi3")
+        pyramid_config.pyramid_openapi3_spec(
             "/workspace/sandbox_storage/openapi.yaml", route=api_path + "openapi.yaml"
         )
-        config.pyramid_openapi3_add_explorer(api_path)
+        pyramid_config.pyramid_openapi3_add_explorer(api_path)
 
-        config.add_route("hello", "/")
-        config.add_route("health", "/health")
+        pyramid_config.add_route("hello", "/")
+        pyramid_config.add_route("health", "/health")
 
-        config.add_route("objects_id", api_path + "/objects/{object_id}")
-        config.add_route(
+        pyramid_config.add_route("objects_id", api_path + "/objects/{object_id}")
+        pyramid_config.add_route(
             "objects_id_access_id", api_path + "/objects/{object_id}/access/{access_id}"
         )
-        config.scan(".")
+        pyramid_config.scan(".")
 
-    return config.make_wsgi_app()
+    return pyramid_config.make_wsgi_app()
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
@@ -96,7 +105,6 @@ def index(_, __):
 def get_objects_id(request: Request):
     """Get info about a `DrsObject`."""
     object_id = request.matchdict["object_id"]
-    config_settings = get_settings()
 
     db = get_session()
     target_object = (
@@ -106,7 +114,7 @@ def get_objects_id(request: Request):
     if target_object is not None:
         return DrsReturnObject(
             id=target_object.drs_id,
-            self_uri=config_settings.drs_path + target_object.drs_id,
+            self_uri=CONFIG_SETTINGS.drs_path + target_object.drs_id,
             size=target_object.size,
             created_time=target_object.created_time.isoformat() + "Z",
             checksums=[
@@ -128,13 +136,29 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id():
+def get_objects_id_access_id(request):
     """Get a URL for fetching bytes."""
-    # Needed for next PR
-    # object_id = request.matchdict["object_id"]
-    # access_id = request.matchdict["access_id"]
 
-    return AccessURL(url="https://drs.access.dummy")
+    object_id = request.matchdict["object_id"]
+    access_id = request.matchdict["access_id"]
+
+    db = get_session()
+    target_object = (
+        db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
+    )
+
+    if target_object is None:
+        raise HTTPBadRequest(
+            json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 400}
+        )
+
+    if access_id == "s3":
+        send_message(object_id, access_id, "user_id")
+        return AccessURL(url=target_object.path)
+
+    raise HTTPBadRequest(
+        json={"msg": "The requested access method does not exist", "status_code": 400}
+    )
 
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
