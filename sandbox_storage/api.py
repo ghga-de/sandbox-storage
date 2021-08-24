@@ -16,7 +16,8 @@
 """ Provides the API endpoints """
 
 from dataclasses import dataclass
-import typing as t
+from typing import Dict, Any, Type
+from pyramid.config.settings import Settings
 
 from pyramid.events import NewRequest
 from pyramid.view import view_config

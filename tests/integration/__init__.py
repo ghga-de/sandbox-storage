@@ -56,6 +56,11 @@ class BaseIntegrationTest(unittest.TestCase):
 
         # initialize DB and provide metadata and file fixtures
         self.initDb()
+
+        # Remove any residual test files
+        remove_test_files()
+
+        # Add test files
         populate_database()
 
         app = get_app(config_settings=self.config)
