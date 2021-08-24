@@ -54,12 +54,12 @@ class TestAPI(BaseIntegrationTest):
             == "3e48b55a59a8d521c3a261c6a41ef27e"
         ), "Wrong checksum"
 
-    # def test_objects_id_access_id(self):
-    #     """Get the URL to download that object"""
-    #     response = self.testapp.get(
-    #         f"{self.config.api_path}/objects/Test1/access/s3", status=200
-    #     )
-    #     assert (
-    #         "Test1" in response.json["url"]
-    #         and self.config.examples_path in response.json["url"]
-    #     ), "No or wrong Url"
+    def test_objects_id_access_id(self):
+        """Get the URL to download that object"""
+        response = self.testapp.get(
+            f"{self.config.api_path}/objects/Test1/access/s3", status=200
+        )
+        assert (
+            "Test1" in response.json["url"]
+            and self.config.examples_path in response.json["url"]
+        ), "No or wrong Url"
