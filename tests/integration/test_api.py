@@ -41,20 +41,25 @@ class TestBase(BaseIntegrationTest):
 
 
 class TestAPI(BaseIntegrationTest):
-    """Test whether DRS API is reachable."""
+    """Perform script to load Test files and then see,
+    if the test objects were loaded in the database"""
 
     def test_objects_id(self):
-        """Swagger's API Explorer should be served on /."""
-        response = self.testapp.get(f"{self.config.api_path}/objects/1", status=200)
-        assert (
-            "<title>Swagger UI</title>" in response.text
-        ), "Swagger UI could not be loaded"
+        """Get Information about an object"""
+        response = self.testapp.get(f"{self.config.api_path}/objects/Test1", status=200)
 
-    def test_objects_id_access_id(self):
-        """Swagger's API Explorer should be served on /api/."""
-        response = self.testapp.get(
-            f"{self.config.api_path}/objects/1/access/s3", status=200
-        )
         assert (
-            "<title>Swagger UI</title>" in response.text
-        ), "Swagger UI could not be loaded"
+            response.json["checksums"][0]["type"] == "md5"
+            and response.json["checksums"][0]["checksum"]
+            == "3e48b55a59a8d521c3a261c6a41ef27e"
+        ), "Wrong checksum"
+
+    # def test_objects_id_access_id(self):
+    #     """Get the URL to download that object"""
+    #     response = self.testapp.get(
+    #         f"{self.config.api_path}/objects/Test1/access/s3", status=200
+    #     )
+    #     assert (
+    #         "Test1" in response.json["url"]
+    #         and self.config.examples_path in response.json["url"]
+    #     ), "No or wrong Url"

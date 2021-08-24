@@ -29,6 +29,8 @@ from sandbox_storage.config import get_settings
 from sandbox_storage.database import Base, get_engine, get_session
 from sandbox_storage.api import get_app
 
+from ..scripts.populate import populate_database, remove_test_files
+
 from .fixtures import db_url
 
 
@@ -54,6 +56,7 @@ class BaseIntegrationTest(unittest.TestCase):
 
         # initialize DB and provide metadata and file fixtures
         self.initDb()
+        populate_database()
 
         app = get_app(config_settings=self.config)
         self.testapp = TestApp(app)
@@ -61,5 +64,6 @@ class BaseIntegrationTest(unittest.TestCase):
     def tearDown(self):
         """Teardown Test Server"""
         transaction.abort()
+        remove_test_files()
         drop_database(db_url)
         del self.testapp
