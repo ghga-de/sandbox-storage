@@ -50,8 +50,8 @@ class TestAPI(BaseIntegrationTest):
 
         assert (
             response.json["checksums"][0]["type"] == "md5"
-            and response.json["checksums"][0]["checksum"]
-            == "3e48b55a59a8d521c3a261c6a41ef27e"
+            and response.json["checksums"][0]["checksum"]  # noqa W503
+            == "3e48b55a59a8d521c3a261c6a41ef27e"  # noqa W503
         ), "Wrong checksum"
 
     def test_objects_id_access_id(self):
@@ -61,5 +61,5 @@ class TestAPI(BaseIntegrationTest):
         )
         assert (
             "Test1" in response.json["url"]
-            and self.config.examples_path in response.json["url"]
+            and self.config.examples_path in response.json["url"]  # noqa W503
         ), "No or wrong Url"

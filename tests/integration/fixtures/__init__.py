@@ -15,7 +15,6 @@
 
 """Fixtures that exclusively used in integration tests"""
 import os
-from typing import Optional, List
 
 
 # get URL to test db from environment variable:
