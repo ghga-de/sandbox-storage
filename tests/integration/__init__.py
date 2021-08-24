@@ -25,7 +25,7 @@ from webtest import TestApp
 import transaction
 from sqlalchemy_utils import create_database, drop_database, database_exists
 
-from sandbox_storage.config import get_settings
+from sandbox_storage.config import get_config
 from sandbox_storage.database import Base, get_engine, get_session
 from sandbox_storage.api import get_app
 
@@ -52,7 +52,7 @@ class BaseIntegrationTest(unittest.TestCase):
 
     def setUp(self):
         """Setup Test Server"""
-        self.config = get_settings()
+        self.config = get_config()
 
         # initialize DB and provide metadata and file fixtures
         self.initDb()

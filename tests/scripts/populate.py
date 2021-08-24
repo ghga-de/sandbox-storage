@@ -21,12 +21,12 @@ import zope.sqlalchemy
 
 from sandbox_storage.database import get_session
 from sandbox_storage.models import DrsObject
-from sandbox_storage.config import get_settings
+from sandbox_storage.config import get_config
 
 
 HERE = Path(__file__).parent.resolve()
 DIR_PATH = HERE.parent.resolve() / "examples"
-TEST_FILE_PATH = get_settings().examples_path
+TEST_FILE_PATH = get_config().examples_path
 
 
 def md5(fname):
