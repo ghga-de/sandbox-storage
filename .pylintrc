@@ -234,7 +234,6 @@ good-names=i,
            Run,
            id,
            db,
-           _
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted

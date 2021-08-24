@@ -19,13 +19,14 @@ from sqlalchemy.exc import IntegrityError
 import transaction
 import zope.sqlalchemy
 
-
 from sandbox_storage.database import get_session
 from sandbox_storage.models import DrsObject
+from sandbox_storage.config import get_config
 
 
 HERE = Path(__file__).parent.resolve()
 DIR_PATH = HERE.parent.resolve() / "examples"
+TEST_FILE_PATH = get_config().examples_path
 
 
 def md5(fname):
@@ -62,9 +63,7 @@ def populate_database():
         checksum_md5 = md5(file_path)
 
         # Get downloadable path
-        path = join(
-            "https://github.com/ghga-de/sandbox-storage/raw/dev/examples/", file
-        )
+        path = join(TEST_FILE_PATH, file)
 
         try:
             # Create Object in Database
@@ -82,6 +81,17 @@ def populate_database():
                 db.flush()
         except IntegrityError as exception:
             raise exception
+
+
+def remove_test_files():
+    # delete from drs_objects where drs_id like 'Test%'
+    with transaction.manager:
+        db = get_session()
+        zope.sqlalchemy.register(db, transaction.manager)
+        db.query(DrsObject).filter(DrsObject.drs_id.like("Test%")).delete(
+            synchronize_session=False
+        )
+        db.flush()
 
 
 if __name__ == "__main__":
