@@ -49,6 +49,10 @@ def populate_database():
 
     files = [file for file in listdir(DIR_PATH) if isfile(join(DIR_PATH, file))]
 
+    # TODO:
+    # Connect to s3
+    # Create bucket "test"
+
     for file in files:
         # Get full path
         file_path = join(DIR_PATH, file)
@@ -64,6 +68,11 @@ def populate_database():
 
         # Get downloadable path
         path = join(TEST_FILE_PATH, file)
+
+        # TODO:
+        # Upload file to "test" bucket
+        # check return for correct checksum
+        # find out what the file url will be
 
         try:
             # Create Object in Database
@@ -84,7 +93,10 @@ def populate_database():
 
 
 def remove_test_files():
-    # delete from drs_objects where drs_id like 'Test%'
+    """
+    Removes the created test files
+    """
+
     with transaction.manager:
         db = get_session()
         zope.sqlalchemy.register(db, transaction.manager)
@@ -92,6 +104,8 @@ def remove_test_files():
             synchronize_session=False
         )
         db.flush()
+
+    # TODO: connect to s3, remove bucket "test"
 
 
 if __name__ == "__main__":

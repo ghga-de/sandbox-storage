@@ -154,7 +154,14 @@ def get_objects_id_access_id(request):
 
     if access_id == "s3":
         send_message(object_id, access_id, "user_id")
-        return AccessURL(url=target_object.path)
+
+        # TODO: connect to s3, get s3 presigned URL from path
+        # change path to localhost
+        path = target_object.path
+        path.removeprefix(CONFIG_SETTINGS.s3_path)
+        path = "http://localhost:4566" + path
+
+        return AccessURL(url=path)
 
     raise HTTPBadRequest(
         json={"msg": "The requested access method does not exist", "status_code": 400}
