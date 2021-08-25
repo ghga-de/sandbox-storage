@@ -81,7 +81,7 @@ def populate_database():
         s3_bucket.upload_file(file_path, file)
 
         # Build file path
-        path = "http://test.s3-localstack:4566/" + file
+        path = "http://s3-localstack:4566/test/" + file
 
         try:
             # Create Object in Database
