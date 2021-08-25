@@ -25,6 +25,9 @@ from pyramid.config import Configurator
 from pyramid.request import Request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
+import boto3
+from botocore.exceptions import ClientError
+
 from .cors import cors_header_response_callback_factory
 from .config import get_config
 from .database import get_session
@@ -32,6 +35,7 @@ from .models import DrsObject
 from .pubsub import send_message
 
 CONFIG_SETTINGS = get_config()
+S3_PATH = CONFIG_SETTINGS.s3_path
 
 
 @dataclass
@@ -155,11 +159,21 @@ def get_objects_id_access_id(request):
     if access_id == "s3":
         send_message(object_id, access_id, "user_id")
 
-        # TODO: connect to s3, get s3 presigned URL from path
+        # Connect to s3
+        s3_client = boto3.client(
+            service_name="s3",
+            endpoint_url=S3_PATH,
+        )
+
+        # Get presigned URL
+        response = s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": "test", "Key": object_id},
+            ExpiresIn=86400,
+        )
+
         # change path to localhost
-        path = target_object.path
-        path.removeprefix(CONFIG_SETTINGS.s3_path)
-        path = "http://localhost:4566" + path
+        path = "http://localhost:4566" + response.removeprefix(CONFIG_SETTINGS.s3_path)
 
         return AccessURL(url=path)
 

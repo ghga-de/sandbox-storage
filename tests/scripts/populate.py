@@ -18,6 +18,7 @@ import hashlib
 from sqlalchemy.exc import IntegrityError
 import transaction
 import zope.sqlalchemy
+import boto3
 
 from sandbox_storage.database import get_session
 from sandbox_storage.models import DrsObject
@@ -26,7 +27,7 @@ from sandbox_storage.config import get_config
 
 HERE = Path(__file__).parent.resolve()
 DIR_PATH = HERE.parent.resolve() / "examples"
-TEST_FILE_PATH = get_config().examples_path
+S3_PATH = get_config().s3_path
 
 
 def md5(fname):
@@ -49,9 +50,19 @@ def populate_database():
 
     files = [file for file in listdir(DIR_PATH) if isfile(join(DIR_PATH, file))]
 
-    # TODO:
     # Connect to s3
-    # Create bucket "test"
+    s3 = boto3.resource(
+        service_name="s3",
+        endpoint_url=S3_PATH,
+    )
+
+    # Remove remnants of previous tests
+    s3_bucket = s3.Bucket("test")
+    if s3_bucket:
+        s3_bucket.objects.all().delete()
+    else:
+        # Create bucket "test" if it does not exist
+        s3_bucket = s3.create_bucket(Bucket="test")
 
     for file in files:
         # Get full path
@@ -66,13 +77,11 @@ def populate_database():
         # Get md5 checksum
         checksum_md5 = md5(file_path)
 
-        # Get downloadable path
-        path = join(TEST_FILE_PATH, file)
-
-        # TODO:
         # Upload file to "test" bucket
-        # check return for correct checksum
-        # find out what the file url will be
+        s3_bucket.upload_file(file_path, file)
+
+        # Build file path
+        path = "http://test.s3-localstack:4566/" + file
 
         try:
             # Create Object in Database
@@ -105,7 +114,16 @@ def remove_test_files():
         )
         db.flush()
 
-    # TODO: connect to s3, remove bucket "test"
+    # Connect to s3
+    s3_client = boto3.resource(
+        service_name="s3",
+        endpoint_url=S3_PATH,
+    )
+
+    # Remove test files from bucket
+    bucket = s3_client.Bucket("test")
+    if bucket:
+        bucket.objects.all().delete()
 
 
 if __name__ == "__main__":
