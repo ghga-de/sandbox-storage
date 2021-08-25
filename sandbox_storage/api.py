@@ -26,7 +26,6 @@ from pyramid.request import Request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 import boto3
-from botocore.exceptions import ClientError
 
 from .cors import cors_header_response_callback_factory
 from .config import get_config
