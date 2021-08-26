@@ -16,6 +16,7 @@
 """ Provides the API endpoints """
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, Any, Type
 from pyramid.config.settings import Settings
 
@@ -72,6 +73,7 @@ class AccessURL:
 def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
     """Builds the App"""
     api_path = config_settings.api_path
+    openapi_spec_path = Path(__file__).parent / "openapi.yaml"
 
     with Configurator() as pyramid_config:
 
@@ -80,7 +82,7 @@ def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
         )
         pyramid_config.include("pyramid_openapi3")
         pyramid_config.pyramid_openapi3_spec(
-            "/workspace/sandbox_storage/openapi.yaml", route=api_path + "openapi.yaml"
+            openapi_spec_path, route=api_path + "openapi.yaml"
         )
         pyramid_config.pyramid_openapi3_add_explorer(api_path)
 
