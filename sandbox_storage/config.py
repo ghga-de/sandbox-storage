@@ -35,9 +35,7 @@ class Config(BaseSettings):
     rabbitmq_port: int = 5672
     topic_name: str = "download_request"
     db_path: str = "postgresql://admin:admin@postgresql/storage"
-    examples_path: str = (
-        "https://github.com/ghga-de/sandbox-storage/raw/dev/test/examples/"
-    )
+    s3_path: str = "http://s3-localstack:4566"
 
     cors_allowed_origins: List[str] = []
     cors_allow_credentials: bool = False

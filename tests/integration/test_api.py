@@ -59,7 +59,4 @@ class TestAPI(BaseIntegrationTest):
         response = self.testapp.get(
             f"{self.config.api_path}/objects/Test1/access/s3", status=200
         )
-        assert (
-            "Test1" in response.json["url"]
-            and self.config.examples_path in response.json["url"]  # noqa W503
-        ), "No or wrong Url"
+        assert "Test1" in response.json["url"], "No or wrong Url"  # noqa W503

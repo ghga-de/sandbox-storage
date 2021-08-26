@@ -36,6 +36,7 @@ requires = [
     "pydantic==1.8.2",
     "ghga-service-chassis-lib[pubsub,api]==0.3.0",
     "transaction==3.0.1",
+    "boto3==1.18.28",
 ]
 
 testing_require = [
