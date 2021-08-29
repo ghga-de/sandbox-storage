@@ -39,6 +39,12 @@ requires = [
     "boto3==1.18.28",
 ]
 
+dev_require = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings"
+]
+
 testing_require = [
     "alembic==1.6.5",
     "pytest",
@@ -71,6 +77,7 @@ setup(
     install_requires=requires,
     extras_require={
         "testing": testing_require,
+        "dev": dev_require,
     },
     classifiers=[
         "Programming Language :: Python",
