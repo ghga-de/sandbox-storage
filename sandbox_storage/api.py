@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Provides the API endpoints """
+"""
+Provides the API endpoints for storage.
+"""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -70,13 +72,20 @@ class AccessURL:
         return {"url": self.url}
 
 
-def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
-    """Builds the App"""
+def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS) -> Any:
+    """
+    Builds the Pyramid app
+
+    Args:
+        config_settings: Settings for the application
+
+    Returns:
+        An instance of Pyramid WSGI app
+
+    """
     api_path = config_settings.api_path
     openapi_spec_path = Path(__file__).parent / "openapi.yaml"
-
     with Configurator() as pyramid_config:
-
         pyramid_config.add_subscriber(
             cors_header_response_callback_factory(config_settings), NewRequest
         )
@@ -94,28 +103,36 @@ def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS):
             "objects_id_access_id", api_path + "/objects/{object_id}/access/{access_id}"
         )
         pyramid_config.scan(".")
-
     return pyramid_config.make_wsgi_app()
 
 
 @view_config(route_name="hello", renderer="json", openapi=False, request_method="GET")
 def index(_, __):
-    """Index Enpoint, returns 'Hello World'"""
+    """
+    Index Enpoint, returns 'Hello World'
+    """
     return {"content": "Hello World!"}
 
 
 @view_config(
     route_name="objects_id", renderer="json", openapi=True, request_method="GET"
 )
-def get_objects_id(request: Request):
-    """Get info about a `DrsObject`."""
-    object_id = request.matchdict["object_id"]
+def get_objects_id(request: Request) -> DrsReturnObject:
+    """
+    Get info about a ``DrsObject``.
 
+    Args:
+        request: An instance of ``pyramid.request.Request``
+
+    Returns:
+        An instance of ``DrsReturnObject``
+
+    """
+    object_id = request.matchdict["object_id"]
     db = get_session()
     target_object = (
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
     )
-
     if target_object is not None:
         return DrsReturnObject(
             id=target_object.drs_id,
@@ -129,7 +146,6 @@ def get_objects_id(request: Request):
                 }
             ],
         )
-
     raise HTTPNotFound(
         json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
     )
@@ -141,8 +157,17 @@ def get_objects_id(request: Request):
     openapi=True,
     request_method="GET",
 )
-def get_objects_id_access_id(request):
-    """Get a URL for fetching bytes."""
+def get_objects_id_access_id(request: Request) -> AccessURL:
+    """
+    Get a URL for fetching bytes.
+
+    Args:
+        request: An instance of ``pyramid.request.Request``
+
+    Returns:
+        An instance of ``AccessURL``
+
+    """
 
     object_id = request.matchdict["object_id"]
     access_id = request.matchdict["access_id"]
@@ -185,5 +210,7 @@ def get_objects_id_access_id(request):
 
 @view_config(route_name="health", renderer="json", openapi=False, request_method="GET")
 def get_health(_, __):
-    """Health check"""
+    """
+    Check for the health of the service.
+    """
     return {"status": "OK"}

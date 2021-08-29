@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Make CORS configurable"""
+"""
+Make CORS configurable
+"""
 
 from typing import Callable, Type, List
 from pyramid.events import NewRequest
@@ -22,25 +24,45 @@ from pyramid.response import Response
 from .config import Config
 
 
-def list_to_comma_sep_str(list_of_str: List[str]):
-    """Join a list of strings into one comma-seperated string."""
+def list_to_comma_sep_str(list_of_str: List[str]) -> str:
+    """
+    Join a list of strings into one comma-seperated string.
+
+    Args:
+        list_of_str: A list of strings to concatenate
+
+    Returns
+        The concatenated string
+
+    """
     if len(list_of_str) == 0:
         return ""
     return ",".join(list_of_str)
 
 
 def cors_header_response_callback_factory(config: Type[Config]) -> Callable:
-    """A factory for creating CORS header callbacks that are
-    configured based on a config object"""
+    """
+    A factory for creating CORS header callbacks that are
+    configured based on a ``Config`` object.
+
+    Args:
+        config: The config for the application
+
+    Returns:
+        A callable object
+
+    """
 
     def cors_headers_response_callback(event: NewRequest):
-        """CORS header callback that can be added to a pyramid config
-        by:
-            `config.add_subscriber(<this_function>, NewRequest)`
+        """
+        CORS header callback that can be added to a pyramid config by:
+        ``config.add_subscriber(<this_function>, NewRequest)``
         """
 
         def cors_headers(_: Request, response: Response):
-            """Modifies Requests."""
+            """
+            Modifies Requests.
+            """
 
             response.headers.update(
                 {

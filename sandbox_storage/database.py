@@ -13,9 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Connect to Database
+"""
+Connect to Database
 """
 
+from typing import Any
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -26,8 +29,17 @@ from .config import get_config
 SQLALCHEMY_DATABASE_URL = get_config().db_path
 
 
-def get_engine(db_url: str):
-    """get sqlalchemy engine"""
+def get_engine(db_url: str) -> sqlalchemy.engine:
+    """
+    Get sqlalchemy engine
+
+    Args:
+        db_url: the database URL
+
+    Returns:
+        An instance of a SQLAlchemy engine
+
+    """
     return create_engine(db_url)
 
 
@@ -38,6 +50,12 @@ register(DBSession)
 Base = declarative_base()
 
 
-def get_session():
-    """Retruns the database session"""
+def get_session() -> DBSession:
+    """
+    Returns the database session
+
+    Returns:
+        An instance of ``DBSession``
+
+    """
     return DBSession()
