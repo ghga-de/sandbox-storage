@@ -29,6 +29,7 @@ class Config(BaseSettings):
     """
     Config class that extends ``ghga_service_chassis_lib.api.ApiConfigBase``
     """
+
     host: str = "127.0.0.1"
     port: int = 8080
     log_level: LogLevel = "info"
