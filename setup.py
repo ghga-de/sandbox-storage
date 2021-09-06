@@ -39,11 +39,7 @@ requires = [
     "boto3==1.18.28",
 ]
 
-dev_require = [
-    "mkdocs",
-    "mkdocs-material",
-    "mkdocstrings"
-]
+dev_require = ["mkdocs", "mkdocs-material", "mkdocstrings"]
 
 testing_require = [
     "alembic==1.6.5",
@@ -57,6 +53,7 @@ testing_require = [
     "webtest",
     "sqlalchemy_utils",
     "transaction",
+    "pre-commit",
 ]
 
 setup(

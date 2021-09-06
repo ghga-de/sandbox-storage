@@ -11,6 +11,7 @@ pip install \
     -e \
     ".[testing]"
 
+# install pre-commit hooks to git:
 pre-commit install
 
 cd database_migration
