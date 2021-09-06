@@ -19,7 +19,7 @@ from pathlib import Path
 from setuptools import setup, find_packages
 
 HERE = Path(__file__).parent.resolve()
-with open(HERE / "README.md") as f:
+with open(HERE / "README.md", encoding="utf-8") as f:
     README = f.read()
 
 requires = [

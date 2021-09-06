@@ -19,8 +19,7 @@ Provides the API endpoints for storage.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Any, Type
-from pyramid.config.settings import Settings
+from typing import Dict, Any
 
 from pyramid.events import NewRequest
 from pyramid.view import view_config
@@ -72,7 +71,7 @@ class AccessURL:
         return {"url": self.url}
 
 
-def get_app(config_settings: Type[Settings] = CONFIG_SETTINGS) -> Any:
+def get_app(config_settings=CONFIG_SETTINGS) -> Any:
     """
     Builds the Pyramid app
 

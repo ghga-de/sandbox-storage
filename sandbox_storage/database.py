@@ -17,7 +17,6 @@
 Connect to Database
 """
 
-from typing import Any
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -50,7 +49,7 @@ register(DBSession)
 Base = declarative_base()
 
 
-def get_session() -> DBSession:
+def get_session() -> scoped_session:
     """
     Returns the database session
 
