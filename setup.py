@@ -19,7 +19,7 @@ from pathlib import Path
 from setuptools import setup, find_packages
 
 HERE = Path(__file__).parent.resolve()
-with open(HERE / "README.md") as f:
+with open(HERE / "README.md", encoding="utf-8") as f:
     README = f.read()
 
 requires = [
@@ -39,6 +39,8 @@ requires = [
     "boto3==1.18.28",
 ]
 
+dev_require = ["mkdocs", "mkdocs-material", "mkdocstrings"]
+
 testing_require = [
     "alembic==1.6.5",
     "pytest",
@@ -51,6 +53,7 @@ testing_require = [
     "webtest",
     "sqlalchemy_utils",
     "transaction",
+    "pre-commit",
 ]
 
 setup(
@@ -71,6 +74,7 @@ setup(
     install_requires=requires,
     extras_require={
         "testing": testing_require,
+        "dev": dev_require,
     },
     classifiers=[
         "Programming Language :: Python",

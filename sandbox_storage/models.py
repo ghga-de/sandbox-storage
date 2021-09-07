@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Database Models
+"""
+Database Models
 """
 
 from sqlalchemy import Column, Integer, String, DateTime
@@ -21,7 +22,9 @@ from .database import Base
 
 
 class DrsObject(Base):
-    """GA4GH DRS Object that links to an S3 object"""
+    """
+    GA4GH DRS Object that links to an S3 object.
+    """
 
     __tablename__ = "drs_objects"
     id = Column(Integer, primary_key=True)

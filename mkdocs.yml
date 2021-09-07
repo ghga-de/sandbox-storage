@@ -1,0 +1,36 @@
+site_name: "Storage Service API"
+docs_dir: docs
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: indigo
+  font:
+    text: Tilium Web
+    code: Courier Prime
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - navigation.expand
+    # - toc.integrate
+  icon:
+    repo: fontawesome/brands/github-square
+
+markdown_extensions:
+  - attr_list
+  - toc:
+      toc_depth: 2
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          rendering:
+            show_root_heading: no
+  - autorefs
+
+repo_url: https://github.com/ghga-de/sandbox-storage
+repo_name: ghga-de/sandbox-storage

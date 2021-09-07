@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Configuration parsing"""
+"""
+This module provides Configuration for the API
+"""
 
 from typing import List
 from functools import lru_cache
@@ -24,7 +26,9 @@ from pydantic import BaseSettings
 
 @config_from_yaml(prefix="sandbox_storage")
 class Config(BaseSettings):
-    """Config parameters and their defaults."""
+    """
+    Config class that extends ``ghga_service_chassis_lib.api.ApiConfigBase``
+    """
 
     host: str = "127.0.0.1"
     port: int = 8080
@@ -44,6 +48,13 @@ class Config(BaseSettings):
 
 
 @lru_cache
-def get_config():
-    """Get config parameter."""
+def get_config() -> Config:
+    """
+    Get the Config object that encapsulates all the
+    configuration for this application.
+
+    Returns:
+        An instance of Config
+
+    """
     return Config()
