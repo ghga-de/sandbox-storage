@@ -17,7 +17,6 @@
 
 
 # This script is currently not in use and might be broken
-# pylint: skip-file
 
 """
 Provides a script function to populate a database
