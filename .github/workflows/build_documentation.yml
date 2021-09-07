@@ -5,6 +5,7 @@ on:
     branches: [ dev ]
     paths:
     - docs/*
+    - sandbox_storage/*
     - mkdocs.yml
 
   workflow_dispatch:
