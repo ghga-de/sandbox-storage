@@ -2,9 +2,22 @@
 
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# Can't populate S3 yet
-# So, just take example files and hard links right now
+
+# This script is currently not in use and might be broken
+# pylint: skip-file
 
 """
 Provides a script function to populate a database
@@ -42,6 +55,7 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
+# pylint: disable=duplicate-code
 def populate_database():
     """
     Populates the database by retrieving the required attributes
@@ -51,7 +65,7 @@ def populate_database():
     files = [file for file in listdir(DIR_PATH) if isfile(join(DIR_PATH, file))]
 
     # Connect to s3
-    s3 = boto3.resource(
+    s3 = boto3.resource(  # pylint: disable=invalid-name
         service_name="s3",
         endpoint_url=S3_PATH,
     )
