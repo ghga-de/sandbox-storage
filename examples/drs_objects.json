@@ -1,0 +1,30 @@
+[
+  {
+    "checksum_md5": "c028547de97d444a0b2f2228027522f3",
+    "created_time": "2021-09-07T09:45:26.201611",
+    "drs_id": "a34e4793-c343-4930-973f-a45196289017",
+    "path": "https://raw.githubusercontent.com/ghga-de/sandbox-storage/dev/examples/files/dataset1_file1.fastq",
+    "size": "432432423"
+  },
+  {
+    "checksum_md5": "9a272c53e31b89e2313f30aed83a38b2",
+    "created_time": "2021-09-07T09:45:26.201611",
+    "drs_id": "9e9d1ec1-aadc-4f45-a8e8-90d1e66f827f",
+    "path": "https://raw.githubusercontent.com/ghga-de/sandbox-storage/dev/examples/files/dataset1_file2.fastq",
+    "size": "432432423"
+  },
+  {
+    "checksum_md5": "061559feaa3ab46e2a2b9bc17d4c093d",
+    "created_time": "2021-09-07T09:45:26.201611",
+    "drs_id": "e1645654-695e-4f52-8e5b-23debd73a678",
+    "path": "https://raw.githubusercontent.com/ghga-de/sandbox-storage/dev/examples/files/dataset2_file1.bam",
+    "size": "432432423"
+  },
+  {
+    "checksum_md5": "5d5c603d32a6d511b6a3dff484953f80",
+    "created_time": "2021-09-07T09:45:26.201611",
+    "drs_id": "05ba3e4f-5cc6-4f70-a21d-7ca902d97f8c",
+    "path": "https://raw.githubusercontent.com/ghga-de/sandbox-storage/dev/examples/files/dataset2_file1.bam.bai",
+    "size": "432432423"
+  }
+]
