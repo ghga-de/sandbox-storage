@@ -19,7 +19,7 @@ Provides the API endpoints for storage.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Optional, List
 
 from pyramid.events import NewRequest
 from pyramid.view import view_config
@@ -40,6 +40,38 @@ S3_PATH = CONFIG_SETTINGS.s3_path
 
 
 @dataclass
+class AccessURL:
+    """Describes the URL for accessing the
+    actual bytes of the object."""
+
+    url: str
+
+    def __json__(self, _: Optional[Request] = None) -> Dict[str, str]:
+        """JSON-renderer for this object."""
+        return {"url": self.url}
+
+
+@dataclass
+class AccessMethod:
+    """An AccessURL"""
+
+    type: str = "s3"  # currently only s3 is supported
+    # At least one of the two has to be provided:
+    access_url: Optional[AccessURL] = None
+    access_id: Optional[str] = None
+
+    def __json__(self, _: Optional[Request] = None) -> Dict[str, Any]:
+        """JSON-renderer for this object."""
+        return_dict: Dict[str, Any] = {"type": self.type}
+        if self.access_url:
+            return_dict["access_url"] = self.access_url.__json__()
+        if self.access_id:
+            return_dict["access_id"] = self.access_id
+
+        return return_dict
+
+
+@dataclass
 class DrsReturnObject:
     """A DrsObject"""
 
@@ -48,10 +80,12 @@ class DrsReturnObject:
     size: int
     created_time: str
     checksums: list
+    access_methods: Optional[List[AccessMethod]] = None
 
-    def __json__(self, _: Request) -> Dict[str, Any]:
+    def __json__(self, _: Optional[Request] = None) -> Dict[str, Any]:
         """JSON-renderer for this object."""
-        return {
+
+        return_dict = {
             "id": self.id,
             "self_uri": self.self_uri,
             "size": self.size,
@@ -59,16 +93,12 @@ class DrsReturnObject:
             "checksums": self.checksums,
         }
 
+        if self.access_methods:
+            return_dict["access_methods"] = [
+                access_method.__json__() for access_method in self.access_methods
+            ]
 
-@dataclass
-class AccessURL:
-    """An AccessURL"""
-
-    url: str
-
-    def __json__(self, _: Request) -> Dict[str, str]:
-        """JSON-renderer for this object."""
-        return {"url": self.url}
+        return return_dict
 
 
 def get_app(config_settings=CONFIG_SETTINGS) -> Any:
@@ -127,13 +157,19 @@ def get_objects_id(request: Request) -> DrsReturnObject:
         An instance of ``DrsReturnObject``
 
     """
+
     object_id = request.matchdict["object_id"]
+
     db = get_session()
     target_object = (
         db.query(DrsObject).filter(DrsObject.drs_id == object_id).one_or_none()
     )
+
     if target_object is not None:
-        return DrsReturnObject(
+
+        access_url = AccessURL(url=target_object.path)
+        access_method = AccessMethod(access_url=access_url)
+        drs_object = DrsReturnObject(
             id=target_object.drs_id,
             self_uri=CONFIG_SETTINGS.drs_path + target_object.drs_id,
             size=target_object.size,
@@ -144,7 +180,11 @@ def get_objects_id(request: Request) -> DrsReturnObject:
                     "type": "md5",
                 }
             ],
+            access_methods=[access_method],
         )
+
+        return drs_object
+
     raise HTTPNotFound(
         json={"msg": "The requested 'DrsObject' wasn't found", "status_code": 404}
     )
