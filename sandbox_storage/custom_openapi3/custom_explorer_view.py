@@ -30,6 +30,10 @@ HERE = Path(__file__).parent.resolve()
 SWAGGER_HTML = HERE / "swagger.html"
 
 
+# ignore some pylint error
+# as this code comes directly from
+# pyramid-openapi and should thus
+# be mpdofied as little as possible:
 def add_custom_explorer_view(  # pylint: disable=too-many-arguments
     config: Configurator,
     route: str = "/docs/",
@@ -59,7 +63,7 @@ def add_custom_explorer_view(  # pylint: disable=too-many-arguments
                     "You need to call config.pyramid_openapi3_spec for the explorer "
                     "to work."
                 )
-            with open(SWAGGER_HTML) as file:
+            with open(SWAGGER_HTML) as file:  # pylint: disable=unspecified-encoding
                 template = Template(file.read())
                 spec_url = (
                     custom_spec_url
