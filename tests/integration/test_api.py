@@ -23,8 +23,8 @@ class TestBase(BaseIntegrationTest):
     """Test whether Basic API functions are reachable."""
 
     def test_swagger_api_loaded(self):
-        """Swagger's API Explorer should be served on the api_path"""
-        response = self.testapp.get(self.config.api_path, status=200)
+        """Swagger's API Explorer should be served on the api_route"""
+        response = self.testapp.get(self.config.api_route, status=200)
         assert (
             "<title>Swagger UI</title>" in response.text
         ), "Swagger UI could not be loaded"
@@ -46,7 +46,9 @@ class TestAPI(BaseIntegrationTest):
 
     def test_objects_id(self):
         """Get Information about an object"""
-        response = self.testapp.get(f"{self.config.api_path}/objects/Test1", status=200)
+        response = self.testapp.get(
+            f"{self.config.api_route}/objects/Test1", status=200
+        )
 
         assert (
             response.json["checksums"][0]["type"] == "md5"
@@ -57,6 +59,6 @@ class TestAPI(BaseIntegrationTest):
     def test_objects_id_access_id(self):
         """Get the URL to download that object"""
         response = self.testapp.get(
-            f"{self.config.api_path}/objects/Test1/access/s3", status=200
+            f"{self.config.api_route}/objects/Test1/access/s3", status=200
         )
         assert "Test1" in response.json["url"], "No or wrong Url"  # noqa W503

@@ -1,8 +1,9 @@
 host: "127.0.0.1"
 port: 8080
 log_level: info
-drs_path: drs://localhost:8080/
-api_path: /ga4gh/drs/v1
+drs_self_url: drs://localhost:8080/
+api_route: /ga4gh/drs/v1
+s3_url: http://s3-localstack:4566
 custom_spec_url: https://localhost:8080/ga4gh/drs/v1/openapi.yaml
 cors_allowed_origins: ["*"]
 cors_allow_credentials: true

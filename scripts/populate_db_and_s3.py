@@ -39,7 +39,7 @@ from sandbox_storage.config import get_config
 
 HERE = Path(__file__).parent.resolve()
 DIR_PATH = HERE.parent.resolve() / "examples"
-S3_PATH = get_config().s3_path
+S3_URL = get_config().s3_url
 
 
 def md5(fname):
@@ -66,7 +66,7 @@ def populate_database():
     # Connect to s3
     s3 = boto3.resource(  # pylint: disable=invalid-name
         service_name="s3",
-        endpoint_url=S3_PATH,
+        endpoint_url=S3_URL,
     )
 
     # Remove remnants of previous tests
@@ -130,7 +130,7 @@ def remove_test_files():
     # Connect to s3
     s3_client = boto3.resource(
         service_name="s3",
-        endpoint_url=S3_PATH,
+        endpoint_url=S3_URL,
     )
 
     # Remove test files from bucket

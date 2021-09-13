@@ -37,7 +37,7 @@ from .pubsub import send_message
 from .custom_openapi3.custom_explorer_view import add_custom_explorer_view
 
 CONFIG_SETTINGS = get_config()
-S3_PATH = CONFIG_SETTINGS.s3_path
+S3_URL = CONFIG_SETTINGS.s3_url
 
 
 @dataclass
@@ -113,7 +113,7 @@ def get_app(config_settings=CONFIG_SETTINGS) -> Any:
         An instance of Pyramid WSGI app
 
     """
-    api_path = Path(config_settings.api_path)
+    api_route = Path(config_settings.api_route)
     openapi_spec_path = Path(__file__).parent / "openapi.yaml"
     with Configurator() as pyramid_config:
         pyramid_config.add_directive(
@@ -125,21 +125,21 @@ def get_app(config_settings=CONFIG_SETTINGS) -> Any:
         )
         pyramid_config.include("pyramid_openapi3")
         pyramid_config.pyramid_openapi3_spec(
-            openapi_spec_path, route=str(api_path / "openapi.yaml")
+            openapi_spec_path, route=str(api_route / "openapi.yaml")
         )
         pyramid_config.pyramid_custom_openapi3_add_explorer(
-            route=str(api_path), custom_spec_url=config_settings.custom_spec_url
+            route=str(api_route), custom_spec_url=config_settings.custom_spec_url
         )
 
         pyramid_config.add_route("hello", "/")
         pyramid_config.add_route("health", "/health")
 
         pyramid_config.add_route(
-            "objects_id", str(api_path / "objects" / "{object_id}")
+            "objects_id", str(api_route / "objects" / "{object_id}")
         )
         pyramid_config.add_route(
             "objects_id_access_id",
-            str(api_path / "objects" / "{object_id}" / "access" / "{access_id}"),
+            str(api_route / "objects" / "{object_id}" / "access" / "{access_id}"),
         )
         pyramid_config.scan(".")
     return pyramid_config.make_wsgi_app()
@@ -181,7 +181,7 @@ def get_objects_id(request: Request) -> DrsReturnObject:
         access_method = AccessMethod(access_url=access_url)
         drs_object = DrsReturnObject(
             id=target_object.drs_id,
-            self_uri=CONFIG_SETTINGS.drs_path + target_object.drs_id,
+            self_uri=CONFIG_SETTINGS.drs_self_url + target_object.drs_id,
             size=target_object.size,
             created_time=target_object.created_time.isoformat() + "Z",
             checksums=[
@@ -237,7 +237,7 @@ def get_objects_id_access_id(request: Request) -> AccessURL:
         # Connect to s3
         s3_client = boto3.client(
             service_name="s3",
-            endpoint_url=S3_PATH,
+            endpoint_url=S3_URL,
         )
 
         # Get presigned URL
@@ -248,7 +248,7 @@ def get_objects_id_access_id(request: Request) -> AccessURL:
         )
 
         # change path to localhost
-        path = "http://localhost:4566" + response.removeprefix(CONFIG_SETTINGS.s3_path)
+        path = "http://localhost:4566" + response.removeprefix(CONFIG_SETTINGS.s3_url)
 
         return AccessURL(url=path)
 
