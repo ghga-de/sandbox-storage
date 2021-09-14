@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    
+
     command: /bin/sh -c "while sleep 1000; do :; done"
-      
+
     ports:
       - target: 8080
         published: 8080
@@ -17,7 +17,6 @@ services:
     environment:
       DB_URL: postgresql://admin:admin@postgresql/storage
       DB_TEST_URL: postgresql://admin:admin@postgresql/test
-      S3_URL: http://s3-localstack:4566
       AWS_SHARED_CREDENTIALS_FILE: /workspace/.aws/credentials
       AWS_CONFIG_FILE: /workspace/.aws/config
 

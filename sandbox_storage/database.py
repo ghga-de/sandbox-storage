@@ -25,7 +25,7 @@ from zope.sqlalchemy import register
 from .config import get_config
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = get_config().db_path
+SQLALCHEMY_DATABASE_URL = get_config().db_url
 
 
 def get_engine(db_url: str) -> sqlalchemy.engine:
