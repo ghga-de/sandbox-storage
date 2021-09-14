@@ -17,7 +17,7 @@
 This module provides Configuration for the API
 """
 
-from typing import List
+from typing import List, Optional
 from functools import lru_cache
 from ghga_service_chassis_lib.config import config_from_yaml
 from ghga_service_chassis_lib.api import LogLevel
@@ -35,6 +35,7 @@ class Config(BaseSettings):
     log_level: LogLevel = "info"
     drs_path: str = "drs://localhost:8080/"
     api_path: str = "/ga4gh/drs/v1"
+    custom_spec_url: Optional[str] = None
     rabbitmq_host: str = "rabbitmq"
     rabbitmq_port: int = 5672
     topic_name: str = "download_request"

@@ -34,6 +34,7 @@ from .config import get_config
 from .database import get_session
 from .models import DrsObject
 from .pubsub import send_message
+from .custom_openapi3.custom_explorer_view import add_custom_explorer_view
 
 CONFIG_SETTINGS = get_config()
 S3_PATH = CONFIG_SETTINGS.s3_path
@@ -112,24 +113,33 @@ def get_app(config_settings=CONFIG_SETTINGS) -> Any:
         An instance of Pyramid WSGI app
 
     """
-    api_path = config_settings.api_path
+    api_path = Path(config_settings.api_path)
     openapi_spec_path = Path(__file__).parent / "openapi.yaml"
     with Configurator() as pyramid_config:
+        pyramid_config.add_directive(
+            "pyramid_custom_openapi3_add_explorer", add_custom_explorer_view
+        )
+
         pyramid_config.add_subscriber(
             cors_header_response_callback_factory(config_settings), NewRequest
         )
         pyramid_config.include("pyramid_openapi3")
         pyramid_config.pyramid_openapi3_spec(
-            openapi_spec_path, route=api_path + "openapi.yaml"
+            openapi_spec_path, route=str(api_path / "openapi.yaml")
         )
-        pyramid_config.pyramid_openapi3_add_explorer(api_path)
+        pyramid_config.pyramid_custom_openapi3_add_explorer(
+            route=str(api_path), custom_spec_url=config_settings.custom_spec_url
+        )
 
         pyramid_config.add_route("hello", "/")
         pyramid_config.add_route("health", "/health")
 
-        pyramid_config.add_route("objects_id", api_path + "/objects/{object_id}")
         pyramid_config.add_route(
-            "objects_id_access_id", api_path + "/objects/{object_id}/access/{access_id}"
+            "objects_id", str(api_path / "objects" / "{object_id}")
+        )
+        pyramid_config.add_route(
+            "objects_id_access_id",
+            str(api_path / "objects" / "{object_id}" / "access" / "{access_id}"),
         )
         pyramid_config.scan(".")
     return pyramid_config.make_wsgi_app()
