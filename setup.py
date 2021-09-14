@@ -67,6 +67,8 @@ setup(
     url="",
     keywords="",
     packages=find_packages(),
+    package_dir={"sandbox_storage": "sandbox_storage"},
+    package_data={"sandbox_storage": ["custom_openapi3/swagger.html"]},
     license="Apache 2.0",
     include_package_data=True,
     zip_safe=False,
