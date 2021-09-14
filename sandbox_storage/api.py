@@ -31,8 +31,8 @@ import boto3
 
 from .cors import cors_header_response_callback_factory
 from .config import get_config
-from .database import get_session
-from .models import DrsObject
+from .dao.db import get_session
+from .dao.db_models import DrsObject
 from .pubsub import send_message
 from .custom_openapi3.custom_explorer_view import add_custom_explorer_view
 

@@ -25,8 +25,8 @@ from pathlib import Path
 import transaction
 import zope.sqlalchemy
 
-from sandbox_storage.database import get_session
-from sandbox_storage.models import DrsObject
+from sandbox_storage.dao.db import get_session
+from sandbox_storage.dao.db_models import DrsObject
 
 HERE = Path(__file__).parent.resolve()
 DRS_OBJECTS_JSON = HERE.parent.resolve() / "examples" / "drs_objects.json"
