@@ -1,6 +1,6 @@
-# Sandbox-Storage - A Short Description
+# Sandbox-Storage - a DRS-compliant service for delivering files from S3
 
-A longer description explaining the use case of this service.
+This service implements the GA4GH DRS, while providing the option to serve files from localstack S3.
 
 ## Documentation:
 
