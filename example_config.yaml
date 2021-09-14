@@ -20,3 +20,6 @@ cors_allowed_origins: ["http://the-other-domain-to-accept.xy"]
 cors_allow_credentials: true
 cors_allowed_methods: ["*"]
 cors_allowed_headers: ["*"]
+
+# only use when you want to hard-code the spec url:
+custom_spec_url: http://localhost:8080/ga4gh/drs/v1/openapi.yaml
