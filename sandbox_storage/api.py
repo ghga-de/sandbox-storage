@@ -193,6 +193,8 @@ def get_objects_id(request: Request) -> DrsReturnObject:
             access_methods=[access_method],
         )
 
+        send_message(object_id, "s3", "user_id")
+
         return drs_object
 
     raise HTTPNotFound(

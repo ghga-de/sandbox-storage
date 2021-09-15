@@ -38,7 +38,7 @@ class Config(BaseSettings):
     custom_spec_url: Optional[str] = None
     rabbitmq_host: str = "rabbitmq"
     rabbitmq_port: int = 5672
-    topic_name: str = "download_request"
+    topic_name_download_requested: str = "download_request"
     db_url: str = "postgresql://admin:admin@postgresql/storage"
     s3_url: str = "http://s3-localstack:4566"
 

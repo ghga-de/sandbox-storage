@@ -51,7 +51,7 @@ def send_message(drs_id: str, access_id: str, user_id: str) -> None:
     message = {"drs_id": drs_id, "access_id": access_id, "user_id": user_id}
     topic = AmqpTopic(
         connection_params=get_connection_params(),
-        topic_name=config.topic_name,
+        topic_name=config.topic_name_download_requested,
         service_name="storage",
     )
     topic.publish(message)
