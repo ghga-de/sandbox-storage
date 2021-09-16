@@ -23,8 +23,8 @@ with example DRS objects
 import transaction
 import zope.sqlalchemy
 
-from sandbox_storage.database import get_session
-from sandbox_storage.models import DrsObject
+from sandbox_storage.dao.db import get_session
+from sandbox_storage.dao.db_models import DrsObject
 
 
 def cleanup_database():

@@ -13,17 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.9.6-buster
+"""
+Database Models
+"""
 
-# copy and install package from source
-COPY . /service
-WORKDIR /service
-RUN pip install --use-feature=in-tree-build .
+from sqlalchemy import Column, Integer, String, DateTime
+from .db import Base
 
-# create new user and execute as that user:
-RUN useradd --create-home appuser
-WORKDIR /home/appuser
-USER appuser
 
-ENTRYPOINT [ "sandbox-storage" ]
+class DrsObject(Base):
+    """
+    GA4GH DRS Object that links to an S3 object.
+    """
 
+    __tablename__ = "drs_objects"
+    id = Column(Integer, primary_key=True)
+    drs_id = Column(String, nullable=False, unique=True)
+    path = Column(String, nullable=False)
+    size = Column(Integer, nullable=False)
+    created_time = Column(DateTime, nullable=False)
+    checksum_md5 = Column(String, nullable=False)

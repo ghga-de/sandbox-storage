@@ -32,8 +32,8 @@ import transaction
 import zope.sqlalchemy
 import boto3
 
-from sandbox_storage.database import get_session
-from sandbox_storage.models import DrsObject
+from sandbox_storage.dao.db import get_session
+from sandbox_storage.dao.db_models import DrsObject
 from sandbox_storage.config import get_config
 
 

@@ -26,10 +26,10 @@ import transaction
 from sqlalchemy_utils import create_database, drop_database, database_exists
 
 from sandbox_storage.config import get_config
-from sandbox_storage.database import Base, get_engine, get_session
+from sandbox_storage.dao.db import Base, get_engine, get_session
 from sandbox_storage.api import get_app
 
-from ..scripts.populate import populate_database, remove_test_files
+from ..scripts.populate_db_and_s3 import populate_database, remove_test_files
 
 from .fixtures import db_url
 

@@ -18,7 +18,7 @@ config.set_main_option("sqlalchemy.url", os.getenv("DB_URL"))
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from sandbox_storage.models import Base
+from sandbox_storage.dao.db_models import Base
 
 target_metadata = Base.metadata
 # target_metadata = None
