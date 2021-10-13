@@ -1,0 +1,22 @@
+log_level: info
+drs_self_url: drs://localhost:8080/
+db_url: postgresql://admin:admin@postgresql/storage
+s3_url: http://s3-localstack:4566
+
+# API params:
+host: "127.0.0.1"
+port: 8080
+api_route: /ga4gh/drs/v1
+# only use when you want to hard-code the spec url:
+custom_spec_url: http://localhost:8080/ga4gh/drs/v1/openapi.yaml
+
+# Async messaging:
+rabbitmq_host: rabbitmq
+rabbitmq_port: 5672
+topic_name_download_requested: download_request
+
+# CORS:
+cors_allowed_origins: ["http://the-other-domain-to-accept.xy"]
+cors_allow_credentials: true
+cors_allowed_methods: ["*"]
+cors_allowed_headers: ["*"]
