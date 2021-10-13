@@ -1,3 +1,9 @@
+**Depreciation Note:   
+Please note, this repo was part of an implementation study and is not longer maintained.
+Please do not use for production.** 
+
+---
+
 # Sandbox-Storage - a DRS-compliant service for delivering files from S3
 
 This service implements the GA4GH DRS, while providing the option to serve files from localstack S3.
