@@ -19,6 +19,7 @@ Consuming or Subscribing to Async Messaging Topics
 
 import pika
 from ghga_service_chassis_lib.pubsub import AmqpTopic
+
 from .config import get_config
 
 

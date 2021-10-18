@@ -17,7 +17,8 @@
 Database Models
 """
 
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, DateTime, Integer, String
+
 from .db import Base
 
 

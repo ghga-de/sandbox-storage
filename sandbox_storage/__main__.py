@@ -6,8 +6,9 @@ Entrypoint for the package.
 """
 
 from wsgiref.simple_server import make_server
-from .config import get_config
+
 from .api import get_app
+from .config import get_config
 
 app = get_app()
 config = get_config()

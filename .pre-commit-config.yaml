@@ -59,4 +59,4 @@ repos:
     hooks:
       - id: pylint
         args: [--disable=E0401]
-        exclude: db_migration|tests|.devcontainer
+        exclude: db_migration|tests|.devcontainer|scripts

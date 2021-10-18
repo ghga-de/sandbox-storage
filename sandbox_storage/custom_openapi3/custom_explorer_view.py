@@ -16,15 +16,14 @@
 """Customize the pyramid-openapi3 swagger explorer"""
 
 from pathlib import Path
-from typing import Optional
 from string import Template
+from typing import Optional
 
-from pyramid.config import Configurator
+from pyramid.config import PHASE0_CONFIG, Configurator
+from pyramid.exceptions import ConfigurationError
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.exceptions import ConfigurationError
-from pyramid.config import PHASE0_CONFIG
 
 HERE = Path(__file__).parent.resolve()
 SWAGGER_HTML = HERE / "swagger.html"
@@ -63,7 +62,7 @@ def add_custom_explorer_view(  # pylint: disable=too-many-arguments
                     "You need to call config.pyramid_openapi3_spec for the explorer "
                     "to work."
                 )
-            with open(SWAGGER_HTML) as file:  # pylint: disable=unspecified-encoding
+            with open(SWAGGER_HTML) as file:  # pylint: disable=E0012
                 template = Template(file.read())
                 spec_url = (
                     custom_spec_url

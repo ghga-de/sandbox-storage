@@ -17,10 +17,12 @@
 Make CORS configurable
 """
 
-from typing import Callable, Type, List
+from typing import Callable, List, Type
+
 from pyramid.events import NewRequest
 from pyramid.request import Request
 from pyramid.response import Response
+
 from .config import Config
 
 

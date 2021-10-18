@@ -17,10 +17,11 @@
 This module provides Configuration for the API
 """
 
-from typing import List, Optional
 from functools import lru_cache
-from ghga_service_chassis_lib.config import config_from_yaml
+from typing import List, Optional
+
 from ghga_service_chassis_lib.api import LogLevel
+from ghga_service_chassis_lib.config import config_from_yaml
 from pydantic import BaseSettings
 
 

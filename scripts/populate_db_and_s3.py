@@ -22,20 +22,20 @@
 Provides a script function to populate a database
 """
 
-from datetime import datetime
-from pathlib import Path
-from os import listdir
-from os.path import isfile, join, getsize, getctime
 import hashlib
-from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+from os import listdir
+from os.path import getctime, getsize, isfile, join
+from pathlib import Path
+
+import boto3
 import transaction
 import zope.sqlalchemy
-import boto3
+from sqlalchemy.exc import IntegrityError
 
+from sandbox_storage.config import get_config
 from sandbox_storage.dao.db import get_session
 from sandbox_storage.dao.db_models import DrsObject
-from sandbox_storage.config import get_config
-
 
 HERE = Path(__file__).parent.resolve()
 DIR_PATH = HERE.parent.resolve() / "examples"

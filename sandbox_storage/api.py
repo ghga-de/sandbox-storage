@@ -19,22 +19,21 @@ Provides the API endpoints for storage.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Any, Optional, List
-
-from pyramid.events import NewRequest
-from pyramid.view import view_config
-from pyramid.config import Configurator
-from pyramid.request import Request
-from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+from typing import Any, Dict, List, Optional
 
 import boto3
+from pyramid.config import Configurator
+from pyramid.events import NewRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+from pyramid.request import Request
+from pyramid.view import view_config
 
-from .cors import cors_header_response_callback_factory
 from .config import get_config
+from .cors import cors_header_response_callback_factory
+from .custom_openapi3.custom_explorer_view import add_custom_explorer_view
 from .dao.db import get_session
 from .dao.db_models import DrsObject
 from .pubsub import send_message
-from .custom_openapi3.custom_explorer_view import add_custom_explorer_view
 
 CONFIG_SETTINGS = get_config()
 S3_URL = CONFIG_SETTINGS.s3_url
