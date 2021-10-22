@@ -94,13 +94,14 @@ def create_presigned_post(
     return response
 
 
-def upload_file(file, url, fields):
+def upload_file(file, url, fields, md5_checksum):
 
     # Demonstrate how another Python program can use the presigned URL to upload a file
     with open(join(DIR_PATH, file), "rb") as f:
 
         files = {"file": (file, f)}
-        http_response = requests.post(url, fields, files=files)
+        headers = {"ContentMD5": md5_checksum}
+        http_response = requests.post(url, fields, files=files, headers=headers)
 
         return http_response
 
@@ -123,18 +124,27 @@ def remove_bucket(bucket_name):
         print(f"No such bucket: {bucket_name}")
 
 
-def check_successfull_upload(s3_client, bucket_name, key):
+def check_successfull_upload(s3_client, bucket_name, key, md5_checksum):
+
+    # event_system = s3_client.meta.events
+    # event_system.register_first("before-sign..*", _add_header)
 
     try:
-        s3_client.get_object(
+        object_metadata = s3_client.head_object(
             Bucket=bucket_name,
             Key=key,
         )
     except ClientError:
         return False
 
-    print(f"File {key} was successfully uploaded to bucket {bucket_name}.")
-    return True
+    etag = object_metadata["ResponseMetadata"]["HTTPHeaders"]["etag"]
+    etag = etag.strip('"')
+    if etag == md5_checksum:
+        print(f"File {key} was successfully uploaded to bucket {bucket_name}.")
+        return True
+    else:
+        print(f"Checksum didn't match.")
+        return False
 
 
 def run():
@@ -157,10 +167,14 @@ def run():
 
         md5_checksum = md5(file_path)
 
-        # TODO: Find a way to submit md5_checksum while uploading
-        while not check_successfull_upload(s3_client, "inbox", file):
+        while not check_successfull_upload(s3_client, "inbox", file, md5_checksum):
             # Upload file using presigned url
-            upload_file(file, presigend_post["url"], presigend_post["fields"])
+            response = upload_file(
+                file,
+                presigend_post["url"],
+                presigend_post["fields"],
+                md5_checksum,
+            )
 
         # Copy to other bucket
         copy_source = {
@@ -168,8 +182,7 @@ def run():
             "Key": file,
         }
 
-        # TODO: Find a way to check, if both files are the same
-        while not check_successfull_upload(s3_client, "outbox", file):
+        while not check_successfull_upload(s3_client, "outbox", file, md5_checksum):
             # Try to copy to other bucket
             s3_client.copy(copy_source, "outbox", file)
 
