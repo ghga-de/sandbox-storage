@@ -219,7 +219,7 @@ def run():
         else:
             print("Presigned URL is None")
 
-    # cleanup()
+    cleanup()
 
 
 def cleanup():
