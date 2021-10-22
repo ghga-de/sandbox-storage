@@ -130,3 +130,7 @@ dmypy.json
 
 # ingore vscode settings:
 .vscode/
+
+# aws credetials
+.aws
+*/credentials
