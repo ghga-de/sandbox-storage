@@ -132,5 +132,4 @@ dmypy.json
 .vscode/
 
 # aws credetials
-.aws/
-*credentials
+.aws/credentials
